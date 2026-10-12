@@ -1,0 +1,107 @@
+/*
+ * Дизайн-токены системы подбора вакансий.
+ * Копируется в frontend/src/styles/tokens.css без изменений.
+ * Tailwind v4 превращает переменные из @theme в утилиты:
+ *   --color-primary  -> bg-primary, text-primary, border-primary
+ *   --radius-md      -> rounded-md
+ *   --shadow-card    -> shadow-card
+ * Те же переменные доступны в CSS и в recharts как var(--color-primary).
+ * Цвета текста проверены на контраст WCAG AA (>= 4.5:1) на фоне surface (#FFFFFF).
+ */
+
+@theme {
+  /* ---------- Шрифт ---------- */
+  --font-sans: "Inter Variable", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ---------- Типографическая шкала (размер / межстрочный) ---------- */
+  --text-xs: 0.75rem;      --text-xs--line-height: 1rem;        /* 12/16: подписи осей, мелкие метки */
+  --text-sm: 0.875rem;     --text-sm--line-height: 1.25rem;     /* 14/20: вторичный текст, таблицы, подсказки */
+  --text-base: 1rem;       --text-base--line-height: 1.5rem;    /* 16/24: основной текст, поля ввода */
+  --text-lg: 1.125rem;     --text-lg--line-height: 1.75rem;     /* 18/28: заголовок карточки вакансии */
+  --text-xl: 1.25rem;      --text-xl--line-height: 1.75rem;     /* 20/28: заголовок секции (h2) */
+  --text-2xl: 1.5rem;      --text-2xl--line-height: 2rem;       /* 24/32: заголовок страницы (h1) */
+  --text-3xl: 2rem;        --text-3xl--line-height: 2.5rem;     /* 32/40: крупные числа StatCard, бейдж на странице вакансии */
+
+  /* ---------- Нейтральные ---------- */
+  --color-bg: #F6F7F9;              /* фон страницы */
+  --color-surface: #FFFFFF;         /* карточки, панели, модальные окна */
+  --color-surface-muted: #F1F3F6;   /* заголовки таблиц, hover строк, фон чипов */
+  --color-border: #DDE1E7;          /* рамки карточек и полей */
+  --color-border-strong: #B8BFC9;   /* рамка поля при hover */
+  --color-text: #1A1D23;            /* основной текст (16.5:1) */
+  --color-text-muted: #5B6472;      /* вторичный текст (6.1:1) */
+  --color-text-disabled: #9AA1AC;   /* только для неактивных элементов, не для информации */
+
+  /* ---------- Основной (действия, ссылки, фокус) ---------- */
+  --color-primary: #2251D1;         /* 6.6:1 на белом */
+  --color-primary-hover: #1B43B0;
+  --color-primary-active: #163891;
+  --color-primary-soft: #E8EEFC;    /* фон выделения, выбранный пункт меню */
+  --color-on-primary: #FFFFFF;
+  --color-focus-ring: #6F93F0;
+
+  /* ---------- Семантические ---------- */
+  --color-success: #1E7F4F;         /* «Покрыто», высокое соответствие (5.0:1) */
+  --color-success-soft: #E5F4EC;
+  --color-warning: #A15C00;         /* предупреждения дрейфа, среднее соответствие (5.2:1) */
+  --color-warning-soft: #FFF4E0;
+  --color-danger: #C62828;          /* «Не покрыто», ошибки, удаление (5.6:1) */
+  --color-danger-soft: #FDECEC;
+  --color-danger-hover: #A82020;
+  --color-info: #2251D1;
+  --color-info-soft: #E8EEFC;
+
+  /* ---------- Снятая с публикации вакансия (ТЗ: «помечаются серым цветом») ---------- */
+  --color-inactive-bg: #EEF0F3;
+  --color-inactive-border: #D3D7DE;
+  --color-inactive-text: #6B7280;   /* 4.6:1 на inactive-bg — остаётся читаемым */
+
+  /* ---------- Графики ---------- */
+  --color-chart-1: #2251D1;         /* основная серия / текущий период */
+  --color-chart-2: #E07A1F;         /* вторая серия (p95) */
+  --color-chart-3: #1E7F4F;         /* третья серия (новые) */
+  --color-chart-4: #8B5CF6;         /* четвёртая серия (деактивированные) */
+  --color-chart-reference: #9AA1AC; /* эталонный период */
+  --color-chart-threshold: #C62828; /* линия порога, рисуется пунктиром */
+  --color-chart-grid: #E6E9EE;
+
+  /* ---------- Скругления ---------- */
+  --radius-sm: 6px;     /* бейджи, чипы, чекбоксы */
+  --radius-md: 8px;     /* кнопки, поля ввода */
+  --radius-lg: 12px;    /* карточки, панели */
+  --radius-xl: 16px;    /* модальные окна */
+
+  /* ---------- Тени ---------- */
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-raised: 0 4px 12px rgb(16 24 40 / 0.10);  /* hover карточки, выпадающие списки */
+  --shadow-modal: 0 20px 40px rgb(16 24 40 / 0.18);
+
+  /* ---------- Размеры раскладки ---------- */
+  --container-page: 1200px;   /* max-w-page: максимальная ширина контента */
+  --spacing-header: 64px;     /* высота шапки */
+  --spacing-sidebar: 320px;   /* ширина панели фильтров и правой колонки */
+}
+
+/* Базовые стили документа */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background: var(--color-bg);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    /* min-width НЕ задаём: при 1280px и видимой полосе прокрутки он сам вызовет
+       горизонтальный скролл. Раскладка должна помещаться в ширину от 1264px. */
+    background: var(--color-bg);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-focus-ring);
+    outline-offset: 2px;
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;  /* для чисел в таблицах и StatCard */
+  }
+}
