@@ -24,7 +24,7 @@ export function Badge({
 }: { tone?: BadgeTone; className?: string; children: ReactNode; 'aria-label'?: string }) {
   return (
     <span
-      className={cn('inline-flex items-center gap-1.5 rounded-sm px-2.5 py-1 text-sm font-medium', tones[tone], className)}
+      className={cn('inline-flex items-center gap-1.5 whitespace-nowrap rounded-sm px-2.5 py-1 text-sm font-medium', tones[tone], className)}
       {...rest}
     >
       {children}

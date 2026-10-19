@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { FileText } from 'lucide-react';
+import { CheckCircle, FileText } from 'lucide-react';
+import { Link } from 'react-router';
 import { ApiError, errorMessage } from '../../api/client';
 import { Alert } from '../../components/ui/Alert';
 import { Button } from '../../components/ui/Button';
@@ -133,7 +134,7 @@ export function ResumeSection() {
               <span>
                 {slow
                   ? 'Обработка занимает больше обычного…'
-                  : 'Выделяем навыки из резюме… Обычно это занимает до 30 секунд.'}
+                  : 'Обрабатываем резюме… Обычно это занимает до 30 секунд.'}
               </span>
             </div>
           ) : null}
@@ -156,6 +157,17 @@ export function ResumeSection() {
             >
               Обработка резюме занимает слишком много времени.
             </Alert>
+          ) : null}
+          {data.status === 'ready' ? (
+            <p role="status" className="flex items-center gap-2 text-success">
+              <CheckCircle aria-hidden="true" size={20} strokeWidth={2} className="shrink-0" />
+              <span>
+                Резюме обработано и готово к подбору.{' '}
+                <Link to="/" className="font-medium text-primary underline underline-offset-2">
+                  Подобрать вакансии
+                </Link>
+              </span>
+            </p>
           ) : null}
           {data.status === 'failed' ? (
             <Alert variant="danger">
@@ -199,7 +211,7 @@ export function ResumeSection() {
         onClose={() => setDeleteOpen(false)}
         busy={remove.isPending}
         title="Удалить резюме?"
-        description="Удалить резюме? Навыки, выделенные из него, тоже будут удалены."
+        description="Удалить резюме? Результаты подбора вакансий тоже будут удалены."
         footer={
           <>
             <Button variant="secondary" onClick={() => setDeleteOpen(false)} disabled={remove.isPending}>

@@ -44,10 +44,15 @@ export function useDrift(from?: string, to?: string) {
 }
 
 /**
- * Есть ли предупреждение дрейфа: PSI строго больше порога или ROC-AUC последнего периода больше порога.
+ * Есть ли предупреждение дрейфа хотя бы в одном разделе дашборда.
  * @param data данные дашборда
  */
 export function hasDriftWarning(data: DriftDashboard): boolean {
+  return inputsDrifted(data) || scoresDrifted(data) || favoriteRateDropped(data);
+}
+
+/** Раздел «Входные данные»: PSI выше порога или ROC-AUC выше порога. */
+export function inputsDrifted(data: DriftDashboard): boolean {
   return psiExceeded(data) || rocExceeded(data);
 }
 
@@ -60,4 +65,28 @@ export function psiExceeded(data: DriftDashboard): boolean {
 export function rocExceeded(data: DriftDashboard): boolean {
   const last = data.adversarial.periods.at(-1);
   return last !== undefined && last.roc_auc > data.adversarial.roc_auc_threshold;
+}
+
+/** Отвергает ли тест Колмогорова — Смирнова равенство распределений оценок кросс-энкодера (p < α). */
+export function scoresDrifted(data: DriftDashboard): boolean {
+  return data.model_scores.p_value < data.model_scores.alpha;
+}
+
+/**
+ * Сводка доли подборов с добавлением в избранное за текущий период (взвешенная по числу подборов).
+ * @param data данные дашборда
+ */
+export function favoriteRateSummary(data: DriftDashboard) {
+  const { days, reference_share, max_drop } = data.favorite_rate;
+  const runs = days.reduce((sum, d) => sum + d.runs, 0);
+  const withFavorite = days.reduce((sum, d) => sum + d.runs_with_favorite, 0);
+  const share = runs === 0 ? null : withFavorite / runs;
+  // Округление убирает погрешность вычитания дробей (0,28 − 0,23 не должно давать 0,0500…01).
+  const drop = share === null ? 0 : Math.round((reference_share - share) * 10_000) / 10_000;
+  return { runs, withFavorite, share, change: share === null ? null : share - reference_share, dropped: drop > max_drop };
+}
+
+/** Снизилась ли доля подборов с избранным сильнее допустимого (строго больше). */
+export function favoriteRateDropped(data: DriftDashboard): boolean {
+  return favoriteRateSummary(data).dropped;
 }

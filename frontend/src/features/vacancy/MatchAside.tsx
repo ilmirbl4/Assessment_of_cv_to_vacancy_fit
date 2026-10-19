@@ -19,6 +19,7 @@ export function MatchAside({ vacancy }: { vacancy: VacancyDetail }) {
   const add = useAddFavorite(vacancy.id);
   const percent = vacancy.match_percent;
   const covered = vacancy.requirements.filter((r) => r.status === 'covered').length;
+  const partial = vacancy.requirements.filter((r) => r.status === 'partially_covered').length;
   const tone = percent === null ? 'neutral' : (matchTone(percent) as keyof typeof toneText);
   return (
     <Card as="div" className="sticky top-22 w-80 shrink-0 self-start">
@@ -31,6 +32,7 @@ export function MatchAside({ vacancy }: { vacancy: VacancyDetail }) {
           </div>
           <p className="mt-2 text-sm text-text-muted">
             Покрыто {covered} из {vacancy.requirements.length}
+            {partial > 0 ? `, частично — ${partial}` : ''}
           </p>
         </>
       ) : null}

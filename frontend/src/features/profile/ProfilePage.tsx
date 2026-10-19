@@ -1,7 +1,6 @@
 import { PageTitle } from '../../components/ui/PageTitle';
 import { AccountSection } from './AccountSection';
 import { ResumeSection } from './ResumeSection';
-import { SkillsSection } from './SkillsSection';
 
 /** Личный кабинет соискателя (`/profile`). */
 export function ProfilePage() {
@@ -10,7 +9,6 @@ export function ProfilePage() {
       <PageTitle title="Личный кабинет" />
       <div className="mt-6 flex max-w-200 flex-col gap-6">
         <ResumeSection />
-        <SkillsSection />
         <AccountSection />
       </div>
     </>

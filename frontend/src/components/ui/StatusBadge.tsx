@@ -1,9 +1,10 @@
-import { AlertTriangle, Check, CheckCircle, EyeOff, X, XCircle } from 'lucide-react';
+import { AlertTriangle, Check, CheckCircle, EyeOff, Minus, X, XCircle } from 'lucide-react';
 import { Badge, type BadgeTone } from './Badge';
 import { Spinner } from './Spinner';
 
 export type StatusKind =
   | 'covered'
+  | 'partially_covered'
   | 'not_covered'
   | 'inactive'
   | 'running'
@@ -15,6 +16,7 @@ export type StatusKind =
 
 const config: Record<StatusKind, { label: string; tone: BadgeTone; icon: typeof Check | null }> = {
   covered: { label: 'Покрыто', tone: 'success', icon: Check },
+  partially_covered: { label: 'Частично покрыто', tone: 'warning', icon: Minus },
   not_covered: { label: 'Не покрыто', tone: 'danger', icon: X },
   inactive: { label: 'Снята с публикации', tone: 'inactive', icon: EyeOff },
   running: { label: 'Выполняется', tone: 'primary', icon: null },

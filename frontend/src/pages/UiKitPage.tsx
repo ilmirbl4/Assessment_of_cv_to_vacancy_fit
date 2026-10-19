@@ -6,7 +6,6 @@ import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
 import { Checkbox } from '../components/ui/Checkbox';
-import { Chip } from '../components/ui/Chip';
 import { Combobox } from '../components/ui/Combobox';
 import { Dialog } from '../components/ui/Dialog';
 import { EmptyState } from '../components/ui/EmptyState';
@@ -24,6 +23,7 @@ import { StatCard } from '../components/ui/StatCard';
 import { type StatusKind, StatusBadge } from '../components/ui/StatusBadge';
 import { Table, Td, Th } from '../components/ui/Table';
 import { Tabs } from '../components/ui/Tabs';
+import { CardTabs } from '../components/ui/CardTabs';
 import { useToast } from '../components/ui/Toast';
 import { formatNumber } from '../lib/format';
 
@@ -32,7 +32,7 @@ const regions = [
   { code: '78', name: 'Санкт-Петербург' },
   { code: '16', name: 'Республика Татарстан' },
 ];
-const statuses: StatusKind[] = ['covered', 'not_covered', 'inactive', 'running', 'success', 'partial', 'failed', 'ok', 'drift'];
+const statuses: StatusKind[] = ['covered', 'partially_covered', 'not_covered', 'inactive', 'running', 'success', 'partial', 'failed', 'ok', 'drift'];
 
 /** Витрина всех UI-компонентов во всех состояниях (только в режиме разработки, маршрут `/__ui`). */
 export function UiKitPage() {
@@ -97,8 +97,6 @@ export function UiKitPage() {
               {statuses.map((s) => (
                 <StatusBadge key={s} kind={s} />
               ))}
-              <Chip>Python</Chip>
-              <Chip>PostgreSQL</Chip>
             </div>
             <div className="mt-4 max-w-sm">
               <ProgressBar percent={92} />
@@ -151,6 +149,16 @@ export function UiKitPage() {
                 ]}
               />
             </div>
+            <div className="mt-6">
+              <CardTabs
+                label="Пример вкладок-карточек"
+                items={[
+                  { to: '/__ui', title: 'Входные данные', description: 'PSI вакансий и резюме', summary: 'PSI до 0,27', status: <StatusBadge kind="drift" /> },
+                  { to: '/consent', title: 'Выходы модели', description: 'Тест Колмогорова — Смирнова', summary: 'D = 0,10 · p < 0,001', status: <StatusBadge kind="drift" /> },
+                  { to: '/login', title: 'Отклик пользователей', description: 'Доля подборов с избранным', summary: '24% при эталоне 28%', status: <StatusBadge kind="ok" /> },
+                ]}
+              />
+            </div>
           </Card>
 
           <div className="grid grid-cols-3 gap-6">
@@ -185,7 +193,7 @@ export function UiKitPage() {
         open={dialog}
         onClose={() => setDialog(false)}
         title="Удалить резюме?"
-        description="Навыки, выделенные из него, тоже будут удалены."
+        description="Результаты подбора вакансий тоже будут удалены."
         footer={
           <>
             <Button variant="secondary" onClick={() => setDialog(false)}>

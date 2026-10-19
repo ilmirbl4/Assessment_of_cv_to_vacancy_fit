@@ -25,3 +25,18 @@ dist-ssr
 coverage
 playwright-report
 test-results
+
+# Моки API (MSW) — только для локальной разработки
+src/mocks/
+public/mockServiceWorker.js
+
+# Тесты — только локально
+src/**/*.test.ts
+src/**/*.test.tsx
+src/test/
+e2e/
+vitest.config.ts
+playwright.config.ts
+
+# Скриншоты, которые генерирует `npm run screens` (основные лежат в /screenshots)
+docs/

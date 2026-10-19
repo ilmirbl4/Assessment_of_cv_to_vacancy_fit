@@ -31,7 +31,6 @@ export interface Resume {
   file_name: string;
   uploaded_at: string;
   status: ResumeStatus;
-  skills: string[];
   error_message: string | null;
 }
 
@@ -65,11 +64,14 @@ export interface MatchPage {
   items: VacancyCard[];
 }
 
-export type RequirementStatus = 'covered' | 'not_covered';
+/** Вердикт кросс-энкодера по паре «требование — фраза резюме». */
+export type RequirementStatus = 'covered' | 'partially_covered' | 'not_covered';
 export interface Requirement {
   number: number;
   text: string;
   status: RequirementStatus;
+  /** Фраза резюме, которой кросс-энкодер покрывает требование; null для `not_covered`. */
+  resume_quote: string | null;
 }
 
 export interface VacancyDetail extends Omit<VacancyCard, 'match_percent'> {
@@ -119,13 +121,47 @@ export interface DistributionBin {
   bin: string;
   share: number;
 }
+export type DriftEntity = 'vacancies' | 'resumes';
 export interface DriftIndicator {
-  key: 'skills_per_vacancy' | 'out_of_vocabulary_share' | 'professional_area';
+  key: 'skills_per_vacancy' | 'professional_area' | 'vacancy_embeddings' | 'resume_embeddings';
   name: string;
+  /** Чьё распределение сравнивается: вакансий или резюме. */
+  entity: DriftEntity;
+  /** Что откладывается по оси корзин (для эмбеддингов — косинусное расстояние до центроида эталона). */
+  bins_label: string;
   psi: number;
   reference: DistributionBin[];
   current: DistributionBin[];
 }
+
+/** Двухвыборочный тест Колмогорова — Смирнова для оценок кросс-энкодера. */
+export interface ScoreDrift {
+  /** Статистика D — наибольшее расхождение эмпирических функций распределения. */
+  statistic: number;
+  p_value: number;
+  /** Уровень значимости: предупреждение, если p_value < alpha. */
+  alpha: number;
+  reference_size: number;
+  current_size: number;
+  /** Гистограмма оценок (корзины по 0,1 на отрезке [0; 1]). */
+  reference: DistributionBin[];
+  current: DistributionBin[];
+}
+
+export interface FavoriteRateDay {
+  date: string;
+  runs: number;
+  runs_with_favorite: number;
+  share: number;
+}
+/** Доля подборов, после которых соискатель добавил хотя бы одну вакансию в избранное. */
+export interface FavoriteRate {
+  reference_share: number;
+  /** Допустимое снижение доли относительно эталона (в долях, 0.05 = 5 п. п.). */
+  max_drop: number;
+  days: FavoriteRateDay[];
+}
+
 export interface DriftDashboard {
   reference_period: { from: string; to: string };
   current_period: { from: string; to: string };
@@ -136,6 +172,8 @@ export interface DriftDashboard {
     periods: { from: string; to: string; roc_auc: number }[];
     top_features: { name: string; importance: number }[];
   };
+  model_scores: ScoreDrift;
+  favorite_rate: FavoriteRate;
 }
 
 export interface Consent {

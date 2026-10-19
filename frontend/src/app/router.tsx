@@ -66,7 +66,16 @@ export const routes = [
                   { index: true, element: <Navigate to="/admin/collection" replace /> },
                   { path: 'collection', lazy: async () => ({ Component: (await import('../features/admin/CollectionPage')).CollectionPage }) },
                   { path: 'speed', lazy: async () => ({ Component: (await import('../features/admin/SpeedPage')).SpeedPage }) },
-                  { path: 'drift', lazy: async () => ({ Component: (await import('../features/admin/DriftPage')).DriftPage }) },
+                  {
+                    path: 'drift',
+                    lazy: async () => ({ Component: (await import('../features/admin/DriftPage')).DriftPage }),
+                    children: [
+                      { index: true, lazy: async () => ({ Component: (await import('../features/admin/DriftPage')).DriftIndex }) },
+                      { path: 'data', lazy: async () => ({ Component: (await import('../features/admin/DriftPage')).DriftInputsView }) },
+                      { path: 'model', lazy: async () => ({ Component: (await import('../features/admin/DriftPage')).DriftModelView }) },
+                      { path: 'feedback', lazy: async () => ({ Component: (await import('../features/admin/DriftPage')).DriftFeedbackView }) },
+                    ],
+                  },
                 ],
               },
             ],
