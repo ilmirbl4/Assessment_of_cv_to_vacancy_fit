@@ -1,0 +1,1955 @@
+[
+ {
+  "id": "00000000-0000-4000-8000-000000000001",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000001",
+   "inn": "770000000001",
+   "ogrn": "1027700000001",
+   "name": "ООО &quot;Компания 1&quot;"
+  },
+  "creation-date": "2026-10-02",
+  "date_modify": "2026-10-03T10:01:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Python-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000001/00000000-0000-4000-8000-000000000001",
+  "schedule": "Сменная работа",
+  "requirements": "Опыт промышленной разработки на Python;\nЗнание FastAPI или Django;\nОпыт работы с PostgreSQL;\nЗнание Docker;\nУмение писать автотесты на pytest;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 1;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-01"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Python-разработчик",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000002",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7200000000000",
+   "name": "Тюменская область"
+  },
+  "company": {
+   "companycode": "1000000000002",
+   "inn": "770000000002",
+   "ogrn": "1027700000002",
+   "name": "ООО &quot;Компания 2&quot;"
+  },
+  "creation-date": "2026-10-03",
+  "date_modify": "2026-10-04T10:02:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Backend-разработчик (FastAPI)",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000002/00000000-0000-4000-8000-000000000002",
+  "schedule": "Вахтовый метод",
+  "requirements": "Разработка REST API на FastAPI;\nОпыт работы с PostgreSQL;\nЗнание Redis;\nЗнание Docker и Docker Compose;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Тюменская область, ул. Центральная, д. 2;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-02"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Backend-разработчик (FastAPI)",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000003",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000003",
+   "inn": "770000000003",
+   "ogrn": "1027700000003",
+   "name": "ООО &quot;Компания 3&quot;"
+  },
+  "creation-date": "2026-10-04",
+  "date_modify": "2026-10-05T10:03:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Senior Python-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000003/00000000-0000-4000-8000-000000000003",
+  "schedule": "Режим гибкого рабочего времени",
+  "requirements": "Опыт разработки на Python от 5 лет;\nОпыт проектирования архитектуры сервисов;\nЗнание Kubernetes;\nОпыт работы с Kafka;\nОпыт управления командой;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 3;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-03"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Senior Python-разработчик",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000004",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000004",
+   "inn": "770000000004",
+   "ogrn": "1027700000004",
+   "name": "ООО &quot;Компания 4&quot;"
+  },
+  "creation-date": "2026-10-05",
+  "date_modify": "2026-10-06T10:04:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Python-разработчик (Django)",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000004/00000000-0000-4000-8000-000000000004",
+  "schedule": "Неполный рабочий день/неполная рабочая неделя",
+  "requirements": "<ul><li>Разработка веб-приложений на Django и Django REST Framework</li><li>Интеграция с внешними сервисами по REST API</li><li>Работа с системой контроля версий Git</li></ul>",
+  "duty": "<p>Выполнение <b>должностных</b> обязанностей</p><ul><li>Работа с клиентами</li><li>Ведение отчётности</li></ul>",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 4;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-04"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Python-разработчик (Django)",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000005",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "6600000000000",
+   "name": "Свердловская область"
+  },
+  "company": {
+   "companycode": "1000000000005",
+   "inn": "770000000005",
+   "ogrn": "1027700000005",
+   "name": "ООО &quot;Компания 5&quot;"
+  },
+  "creation-date": "2026-10-06",
+  "date_modify": "2026-10-07T10:05:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Fullstack-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000005/00000000-0000-4000-8000-000000000005",
+  "schedule": "Ненормированный рабочий день",
+  "requirements": "Опыт на React и TypeScript;\nОпыт на Python;\nЗнание SQL;\nОпыт настройки CI/CD;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Свердловская область, ул. Центральная, д. 5;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-05"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Fullstack-разработчик",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000006",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000006",
+   "inn": "770000000006",
+   "ogrn": "1027700000006",
+   "name": "ООО &quot;Компания 6&quot;"
+  },
+  "creation-date": "2026-10-07",
+  "date_modify": "2026-10-08T10:06:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Go-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000006/00000000-0000-4000-8000-000000000006",
+  "schedule": "Полный рабочий день",
+  "requirements": "Опыт коммерческой разработки на Go;\nЗнание gRPC;\nОпыт работы с Kubernetes;\nЗнание PostgreSQL;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 6;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-06"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Go-разработчик",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000007",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000007",
+   "inn": "770000000007",
+   "ogrn": "1027700000007",
+   "name": "ООО &quot;Компания 7&quot;"
+  },
+  "creation-date": "2026-10-08",
+  "date_modify": "2026-10-09T10:07:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Разработчик 1С",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000007/00000000-0000-4000-8000-000000000007",
+  "schedule": "Сменная работа",
+  "requirements": "Опыт программирования в 1С:Предприятие 8;\nЗнание конфигураций 1С:Бухгалтерия;\nОпыт написания обработок;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 7;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-07"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Разработчик 1С",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000008",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7200000000000",
+   "name": "Тюменская область"
+  },
+  "company": {
+   "companycode": "1000000000008",
+   "inn": "770000000008",
+   "ogrn": "1027700000008",
+   "name": "ООО &quot;Компания 8&quot;"
+  },
+  "creation-date": "2026-10-09",
+  "date_modify": "2026-10-10T10:08:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "DevOps-инженер",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000008/00000000-0000-4000-8000-000000000008",
+  "schedule": "Вахтовый метод",
+  "requirements": "Настройка CI/CD конвейера в GitLab CI;\nКонтейнеризация сервисов с помощью Docker;\nОпыт администрирования Linux;\nЗнание Terraform и Ansible;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Тюменская область, ул. Центральная, д. 8;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-08"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "DevOps-инженер",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000009",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000009",
+   "inn": "770000000009",
+   "ogrn": "1027700000009",
+   "name": "ООО &quot;Компания 9&quot;"
+  },
+  "creation-date": "2026-10-10",
+  "date_modify": "2026-10-11T10:09:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Инженер по тестированию (QA Automation)",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000009/00000000-0000-4000-8000-000000000009",
+  "schedule": "Режим гибкого рабочего времени",
+  "requirements": "Написание автоматических тестов на pytest;\nЗнание SQL;\nОпыт работы с Jira;\nОпыт тестирования REST API;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 9;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-09"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Инженер по тестированию (QA Automation)",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000010",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000010",
+   "inn": "770000000010",
+   "ogrn": "1027700000010",
+   "name": "ООО &quot;Компания 10&quot;"
+  },
+  "creation-date": "2026-10-11",
+  "date_modify": "2026-10-12T10:10:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Аналитик данных",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000010/00000000-0000-4000-8000-000000000010",
+  "schedule": "Неполный рабочий день/неполная рабочая неделя",
+  "requirements": "Знание SQL и опыт оптимизации запросов;\nОпыт на Python (pandas);\nПостроение дашбордов в Power BI;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 10;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-10"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Аналитик данных",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000011",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "6600000000000",
+   "name": "Свердловская область"
+  },
+  "company": {
+   "companycode": "1000000000011",
+   "inn": "770000000011",
+   "ogrn": "1027700000011",
+   "name": "ООО &quot;Компания 11&quot;"
+  },
+  "creation-date": "2026-10-12",
+  "date_modify": "2026-10-13T10:11:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Junior Python-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000011/00000000-0000-4000-8000-000000000011",
+  "schedule": "Ненормированный рабочий день",
+  "requirements": "Базовые знания Python;\nЗнание Git;\nЗнание SQL;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Свердловская область, ул. Центральная, д. 11;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-11"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Junior Python-разработчик",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000012",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000012",
+   "inn": "770000000012",
+   "ogrn": "1027700000012",
+   "name": "ООО &quot;Компания 12&quot;"
+  },
+  "creation-date": "2026-10-13",
+  "date_modify": "2026-10-14T10:12:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Python-разработчик (стажёр)",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000012/00000000-0000-4000-8000-000000000012",
+  "schedule": "Полный рабочий день",
+  "requirements": "Знание основ Python;\nЖелание учиться;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 12;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-12"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Python-разработчик (стажёр)",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000013",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000013",
+   "inn": "770000000013",
+   "ogrn": "1027700000013",
+   "name": "ООО &quot;Компания 13&quot;"
+  },
+  "creation-date": "2026-10-14",
+  "date_modify": "2026-10-15T10:13:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Системный администратор",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000013/00000000-0000-4000-8000-000000000013",
+  "schedule": "Сменная работа",
+  "requirements": "Администрирование Linux;\nНастройка Nginx;\nЗнание сетевых протоколов;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 13;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-13"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Системный администратор",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000014",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7200000000000",
+   "name": "Тюменская область"
+  },
+  "company": {
+   "companycode": "1000000000014",
+   "inn": "770000000014",
+   "ogrn": "1027700000014",
+   "name": "ООО &quot;Компания 14&quot;"
+  },
+  "creation-date": "2026-10-15",
+  "date_modify": "2026-10-16T10:14:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Frontend-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000014/00000000-0000-4000-8000-000000000014",
+  "schedule": "Вахтовый метод",
+  "requirements": "Опыт на React;\nЗнание JavaScript и TypeScript;\nВерстка HTML и CSS;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Тюменская область, ул. Центральная, д. 14;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-14"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Frontend-разработчик",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000015",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000015",
+   "inn": "770000000015",
+   "ogrn": "1027700000015",
+   "name": "ООО &quot;Компания 15&quot;"
+  },
+  "creation-date": "2026-10-16",
+  "date_modify": "2026-10-17T10:15:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Data Engineer",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000015/00000000-0000-4000-8000-000000000015",
+  "schedule": "Режим гибкого рабочего времени",
+  "requirements": "Опыт на Python;\nЗнание SQL;\nОпыт работы с Airflow;\nОпыт работы с PostgreSQL;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 15;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-15"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Data Engineer",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000016",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000016",
+   "inn": "770000000016",
+   "ogrn": "1027700000016",
+   "name": "ООО &quot;Компания 16&quot;"
+  },
+  "creation-date": "2026-10-17",
+  "date_modify": "2026-10-18T10:16:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Тимлид backend-разработки",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000016/00000000-0000-4000-8000-000000000016",
+  "schedule": "Неполный рабочий день/неполная рабочая неделя",
+  "requirements": "Опыт разработки на Python более 4 лет;\nОпыт управления командой;\nУчастие в code review;\nЗнание PostgreSQL;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 16;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-16"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Тимлид backend-разработки",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000017",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000017",
+   "inn": "770000000017",
+   "ogrn": "1027700000017",
+   "name": "ООО &quot;Компания 17&quot;"
+  },
+  "creation-date": "2026-10-05",
+  "date_modify": "2026-10-06T10:17:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Повар",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000017/00000000-0000-4000-8000-000000000017",
+  "schedule": "Сменная работа",
+  "requirements": "<ul><li>Знание технологии приготовления блюд</li><li>Наличие медицинской книжки</li><li>Опыт работы поваром от 1 года</li></ul>",
+  "duty": "<p>Выполнение <b>должностных</b> обязанностей</p><ul><li>Работа с клиентами</li><li>Ведение отчётности</li></ul>",
+  "category": {
+   "specialisation": "Туризм, гостиницы, рестораны"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 17;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-17"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Повар",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000018",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000018",
+   "inn": "770000000018",
+   "ogrn": "1027700000018",
+   "name": "ООО &quot;Компания 18&quot;"
+  },
+  "creation-date": "2026-10-06",
+  "date_modify": "2026-10-07T10:18:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Водитель-экспедитор",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000018/00000000-0000-4000-8000-000000000018",
+  "schedule": "Вахтовый метод",
+  "requirements": "Водительское удостоверение категории B;\nОпыт работы водителем;\nЗнание города;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Транспорт, логистика"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 18;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-18"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Водитель-экспедитор",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000019",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "6600000000000",
+   "name": "Свердловская область"
+  },
+  "company": {
+   "companycode": "1000000000019",
+   "inn": "770000000019",
+   "ogrn": "1027700000019",
+   "name": "ООО &quot;Компания 19&quot;"
+  },
+  "creation-date": "2026-10-07",
+  "date_modify": "2026-10-08T10:19:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Продавец-консультант",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000019/00000000-0000-4000-8000-000000000019",
+  "schedule": "Режим гибкого рабочего времени",
+  "requirements": "Опыт работы в продажах;\nКоммуникабельность;\nЗнание кассовой дисциплины;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Продажи, закупки, снабжение, торговля"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Свердловская область, ул. Центральная, д. 19;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-19"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Продавец-консультант",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000020",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000020",
+   "inn": "770000000020",
+   "ogrn": "1027700000020",
+   "name": "ООО &quot;Компания 20&quot;"
+  },
+  "creation-date": "2026-10-08",
+  "date_modify": "2026-10-09T10:20:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Бухгалтер",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000020/00000000-0000-4000-8000-000000000020",
+  "schedule": "Неполный рабочий день/неполная рабочая неделя",
+  "requirements": "Знание 1С:Бухгалтерия;\nОпыт ведения первичной документации;\nЗнание налогового учёта;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Бухгалтерия, управленческий учёт, финансы предприятия"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 20;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-20"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Бухгалтер",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000021",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000021",
+   "inn": "770000000021",
+   "ogrn": "1027700000021",
+   "name": "ООО &quot;Компания 21&quot;"
+  },
+  "creation-date": "2026-10-09",
+  "date_modify": "2026-10-10T10:21:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Медицинская сестра",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000021/00000000-0000-4000-8000-000000000021",
+  "schedule": "Ненормированный рабочий день",
+  "requirements": "Среднее медицинское образование;\nДействующий сертификат специалиста;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Медицина, фармацевтика"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 21;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-21"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Медицинская сестра",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000022",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7200000000000",
+   "name": "Тюменская область"
+  },
+  "company": {
+   "companycode": "1000000000022",
+   "inn": "770000000022",
+   "ogrn": "1027700000022",
+   "name": "ООО &quot;Компания 22&quot;"
+  },
+  "creation-date": "2026-10-10",
+  "date_modify": "2026-10-11T10:22:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Инженер-строитель",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000022/00000000-0000-4000-8000-000000000022",
+  "schedule": "Полный рабочий день",
+  "requirements": "Высшее строительное образование;\nЗнание СНиП;\nОпыт работы с AutoCAD;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Строительство, недвижимость"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Тюменская область, ул. Центральная, д. 22;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-22"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Инженер-строитель",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000023",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000023",
+   "inn": "770000000023",
+   "ogrn": "1027700000023",
+   "name": "ООО &quot;Компания 23&quot;"
+  },
+  "creation-date": "2026-10-11",
+  "date_modify": "2026-10-12T10:23:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Менеджер по продажам",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000023/00000000-0000-4000-8000-000000000023",
+  "schedule": "Сменная работа",
+  "requirements": "Опыт активных продаж;\nВедение переговоров;\nЗнание CRM-систем;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Продажи, закупки, снабжение, торговля"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 23;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-23"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Менеджер по продажам",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000024",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000024",
+   "inn": "770000000024",
+   "ogrn": "1027700000024",
+   "name": "ООО &quot;Компания 24&quot;"
+  },
+  "creation-date": "2026-10-12",
+  "date_modify": "2026-10-13T10:24:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Учитель английского языка",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000024/00000000-0000-4000-8000-000000000024",
+  "schedule": "Вахтовый метод",
+  "requirements": "Высшее педагогическое образование;\nСвободное владение английским языком;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Образование, наука"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 24;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-24"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Учитель английского языка",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000025",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "6600000000000",
+   "name": "Свердловская область"
+  },
+  "company": {
+   "companycode": "1000000000025",
+   "inn": "770000000025",
+   "ogrn": "1027700000025",
+   "name": "ООО &quot;Компания 25&quot;"
+  },
+  "creation-date": "2026-10-13",
+  "date_modify": "2026-10-14T10:25:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Электрик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000025/00000000-0000-4000-8000-000000000025",
+  "schedule": "Режим гибкого рабочего времени",
+  "requirements": "Группа допуска по электробезопасности не ниже III;\nОпыт работы электриком;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Рабочие специальности"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Свердловская область, ул. Центральная, д. 25;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-25"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Электрик",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000026",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000026",
+   "inn": "770000000026",
+   "ogrn": "1027700000026",
+   "name": "ООО &quot;Компания 26&quot;"
+  },
+  "creation-date": "2026-10-14",
+  "date_modify": "2026-10-15T10:26:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Курьер",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000026/00000000-0000-4000-8000-000000000026",
+  "schedule": "Неполный рабочий день/неполная рабочая неделя",
+  "requirements": "Ответственность;\nЗнание города;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Транспорт, логистика"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 26;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-26"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Курьер",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000027",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000027",
+   "inn": "770000000027",
+   "ogrn": "1027700000027",
+   "name": "ООО &quot;Компания 27&quot;"
+  },
+  "creation-date": "2026-10-15",
+  "date_modify": "2026-10-16T10:27:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Маркетолог",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000027/00000000-0000-4000-8000-000000000027",
+  "schedule": "Ненормированный рабочий день",
+  "requirements": "Опыт ведения социальных сетей;\nЗнание основ интернет-маркетинга;\nОпыт работы с аналитикой;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Маркетинг, реклама, PR"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 27;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-27"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Маркетолог",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000028",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7200000000000",
+   "name": "Тюменская область"
+  },
+  "company": {
+   "companycode": "1000000000028",
+   "inn": "770000000028",
+   "ogrn": "1027700000028",
+   "name": "ООО &quot;Компания 28&quot;"
+  },
+  "creation-date": "2026-10-16",
+  "date_modify": "2026-10-17T10:28:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Юрисконсульт",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000028/00000000-0000-4000-8000-000000000028",
+  "schedule": "Полный рабочий день",
+  "requirements": "Высшее юридическое образование;\nОпыт подготовки договоров;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Юриспруденция"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Тюменская область, ул. Центральная, д. 28;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-28"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Юрисконсульт",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000029",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000029",
+   "inn": "770000000029",
+   "ogrn": "1027700000029",
+   "name": "ООО &quot;Компания 29&quot;"
+  },
+  "creation-date": "2026-10-17",
+  "date_modify": "2026-10-18T10:29:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Кладовщик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000029/00000000-0000-4000-8000-000000000029",
+  "schedule": "Сменная работа",
+  "requirements": "Опыт работы на складе;\nЗнание 1С:Склад;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Транспорт, логистика"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 29;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-29"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Кладовщик",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000030",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000030",
+   "inn": "770000000030",
+   "ogrn": "1027700000030",
+   "name": "ООО &quot;Компания 30&quot;"
+  },
+  "creation-date": "2026-10-18",
+  "date_modify": "2026-10-19T10:30:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Администратор отеля",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000030/00000000-0000-4000-8000-000000000030",
+  "schedule": "Вахтовый метод",
+  "requirements": "Опыт работы администратором;\nЗнание английского языка;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Туризм, гостиницы, рестораны"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 30;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-30"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Администратор отеля",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000031",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "6600000000000",
+   "name": "Свердловская область"
+  },
+  "company": {
+   "companycode": "1000000000031",
+   "inn": "770000000031",
+   "ogrn": "1027700000031",
+   "name": "ООО &quot;Компания 31&quot;"
+  },
+  "creation-date": "2026-10-19",
+  "date_modify": "2026-10-20T10:31:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Дизайнер интерфейсов",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000031/00000000-0000-4000-8000-000000000031",
+  "schedule": "Режим гибкого рабочего времени",
+  "requirements": "Опыт работы в Figma;\nПортфолио интерфейсных проектов;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Маркетинг, реклама, PR"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Свердловская область, ул. Центральная, д. 31;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-31"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Дизайнер интерфейсов",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000032",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000032",
+   "inn": "770000000032",
+   "ogrn": "1027700000032",
+   "name": "ООО &quot;Компания 32&quot;"
+  },
+  "creation-date": "2026-10-20",
+  "date_modify": "2026-10-21T10:32:00+0300",
+  "salary_min": 180000,
+  "salary_max": 180000,
+  "job-name": "Секретарь-референт",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000032/00000000-0000-4000-8000-000000000032",
+  "schedule": "Неполный рабочий день/неполная рабочая неделя",
+  "requirements": "Опыт ведения делопроизводства;\nУверенный пользователь офисных программ;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Административный персонал"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 32;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-32"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Секретарь-референт",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000033",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000033",
+   "inn": "770000000033",
+   "ogrn": "1027700000033",
+   "name": "ООО &quot;Компания 33&quot;"
+  },
+  "creation-date": "2026-10-01",
+  "date_modify": "2026-10-02T10:33:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Слесарь-ремонтник",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000033/00000000-0000-4000-8000-000000000033",
+  "schedule": "Ненормированный рабочий день",
+  "requirements": "Опыт ремонта оборудования;\nЧтение чертежей;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Рабочие специальности"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 33;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-33"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Слесарь-ремонтник",
+  "currency": "«руб.»",
+  "employment": "Стажировка"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000034",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7200000000000",
+   "name": "Тюменская область"
+  },
+  "company": {
+   "companycode": "1000000000034",
+   "inn": "770000000034",
+   "ogrn": "1027700000034",
+   "name": "ООО &quot;Компания 34&quot;"
+  },
+  "creation-date": "2026-10-02",
+  "date_modify": "2026-10-03T10:34:00+0300",
+  "salary_min": 250000,
+  "salary_max": 150000,
+  "job-name": "Агроном",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000034/00000000-0000-4000-8000-000000000034",
+  "schedule": "Полный рабочий день",
+  "requirements": "Высшее аграрное образование;\nОпыт работы агрономом;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Сельское хозяйство"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 6
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Тюменская область, ул. Центральная, д. 34;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-34"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Агроном",
+  "currency": "«руб.»"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000035",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000035",
+   "inn": "770000000035",
+   "ogrn": "1027700000035",
+   "name": "ООО &quot;Компания 35&quot;"
+  },
+  "creation-date": "2026-10-03",
+  "date_modify": "2026-10-04T10:35:00+0300",
+  "salary_min": 150000,
+  "salary_max": 0,
+  "job-name": "Охранник",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000035/00000000-0000-4000-8000-000000000035",
+  "schedule": "Сменная работа",
+  "requirements": "Удостоверение охранника;\nОтсутствие судимости;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Безопасность"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 2
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 35;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-35"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Охранник",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000036",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "1600000000000",
+   "name": "Республика Татарстан"
+  },
+  "company": {
+   "companycode": "1000000000036",
+   "inn": "770000000036",
+   "ogrn": "1027700000036",
+   "name": "ООО &quot;Компания 36&quot;"
+  },
+  "creation-date": "2026-10-04",
+  "date_modify": "2026-10-05T10:36:00+0300",
+  "salary_min": 200000,
+  "salary_max": 300000,
+  "job-name": "Экономист",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000036/00000000-0000-4000-8000-000000000036",
+  "schedule": "Вахтовый метод",
+  "requirements": "Опыт планирования бюджета;\nЗнание Excel на высоком уровне;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Бухгалтерия, управленческий учёт, финансы предприятия"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Республика Татарстан, ул. Центральная, д. 36;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-36"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Экономист",
+  "currency": "«руб.»",
+  "employment": "Частичная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000037",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000037",
+   "inn": "770000000037",
+   "ogrn": "1027700000037",
+   "name": "ООО &quot;Компания 37&quot;"
+  },
+  "creation-date": "2026-10-16",
+  "date_modify": "2026-10-17T10:37:00+0300",
+  "salary_min": 220000,
+  "salary_max": 280000,
+  "job-name": "Python-разработчик (идеальное совпадение)",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000037/00000000-0000-4000-8000-000000000037",
+  "schedule": "Полный рабочий день",
+  "requirements": "промышленной разработки на Python;\nREST API на FastAPI;\nPostgreSQL;\nDocker и Docker Compose;\nавтоматических тестов на pytest;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 3
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 37;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-37"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Python-разработчик (идеальное совпадение)",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000038",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "2200000000000",
+   "name": "Алтайский край"
+  },
+  "company": {
+   "companycode": "1000000000038",
+   "inn": "770000000038",
+   "ogrn": "1027700000038",
+   "name": "ООО &quot;Компания 38&quot;"
+  },
+  "creation-date": "2026-10-06",
+  "date_modify": "2026-10-07T10:38:00+0300",
+  "salary_min": 0,
+  "salary_max": 0,
+  "job-name": "Разнорабочий",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000038/00000000-0000-4000-8000-000000000038",
+  "schedule": "Вахтовый метод",
+  "requirements": "",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Рабочие специальности"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 0
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "Алтайский край, ул. Центральная, д. 38;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-38"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 3,
+  "skills": [],
+  "typicalPosition": "Разнорабочий",
+  "currency": "«руб.»",
+  "employment": "Временная работа"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000039",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7800000000000",
+   "name": "г. Санкт-Петербург"
+  },
+  "company": {
+   "companycode": "1000000000039",
+   "inn": "770000000039",
+   "ogrn": "1027700000039",
+   "name": "ООО &quot;Компания 39&quot;"
+  },
+  "creation-date": "2026-10-10",
+  "date_modify": "2026-10-11T10:39:00+0300",
+  "salary_min": 300000,
+  "salary_max": 0,
+  "job-name": "Ведущий специалист по разработке и сопровождению высоконагруженных распределённых информационных систем Ведущий специалист по разработке и сопровождению высоконагруженных распределённых информационных систем ",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000039/00000000-0000-4000-8000-000000000039",
+  "schedule": "Полный рабочий день",
+  "requirements": "Опыт на Python;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Санкт-Петербург, ул. Центральная, д. 39;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-39"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 1,
+  "skills": [],
+  "typicalPosition": "Ведущий специалист по разработке и сопровождению высоконагруженных распределённых информационных систем Ведущий специалист по разработке и сопровождению высоконагруженных распределённых информационных систем ",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ },
+ {
+  "id": "00000000-0000-4000-8000-000000000040",
+  "source": "Вакансия работодателя",
+  "region": {
+   "region_code": "7700000000000",
+   "name": "г. Москва"
+  },
+  "company": {
+   "companycode": "1000000000040",
+   "inn": "770000000040",
+   "ogrn": "1027700000040",
+   "name": "ООО &quot;Компания 40&quot;"
+  },
+  "creation-date": "2026-10-03",
+  "date_modify": "2026-10-04T10:40:00+0300",
+  "salary_min": 120000,
+  "salary_max": 160000,
+  "job-name": "Архивный Python-разработчик",
+  "vac_url": "https://trudvsem.ru/vacancy/card/1000000000040/00000000-0000-4000-8000-000000000040",
+  "schedule": "Полный рабочий день",
+  "requirements": "Опыт на Python;\nЗнание Django;",
+  "duty": "Выполнение должностных обязанностей по специальности; Взаимодействие с коллегами",
+  "category": {
+   "specialisation": "Информационные технологии, телекоммуникации"
+  },
+  "requirement": {
+   "education": "Высшее образование",
+   "experience": 1
+  },
+  "addresses": {
+   "address": [
+    {
+     "location": "г. Москва, ул. Центральная, д. 40;"
+    }
+   ]
+  },
+  "contact_list": [
+   {
+    "contact_type": "Телефон",
+    "contact_value": "+7(900) 000-00-40"
+   }
+  ],
+  "contact_person": "Отдел кадров",
+  "work_places": 2,
+  "skills": [],
+  "typicalPosition": "Архивный Python-разработчик",
+  "currency": "«руб.»",
+  "employment": "Полная занятость"
+ }
+]
