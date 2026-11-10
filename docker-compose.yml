@@ -1,0 +1,70 @@
+# Все значения берутся из .env рядом с этим файлом (шаблон: .env.example).
+services:
+  backend:
+    build: ./backend
+    environment:
+      STORAGE_BACKEND: ${BACKEND_STORAGE_BACKEND:?задайте в .env}
+      DATABASE_URL: postgresql://${POSTGRES_USER:?}:${POSTGRES_PASSWORD:?}@postgres:5432/${POSTGRES_DB:?}
+      ML_BI_ENCODER_PATH: ${BACKEND_ML_BI_ENCODER_PATH:?}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:?}
+      COOKIE_SECURE: ${COOKIE_SECURE:?}
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:?}
+      EMAIL_BACKEND: ${EMAIL_BACKEND:?}
+      SMTP_HOST: ${SMTP_HOST:?}
+      SMTP_PORT: ${SMTP_PORT:?}
+      SMTP_SECURITY: ${SMTP_SECURITY:?}
+      SMTP_FROM: ${SMTP_FROM:?}
+      COLLECTOR_ENABLED: ${COLLECTOR_ENABLED:?}
+    # Необязательный файл с настоящим SMTP-ящиком (см. backend/REPORT.md → «Как запустить»); значения переопределяют умолчания.
+    env_file:
+      - path: backend/.env
+        required: false
+    volumes:
+      - ${MODELS_DIR:?}:/models:ro
+    depends_on:
+      mailpit:
+        condition: service_started
+      postgres:
+        condition: service_healthy
+    # Сборщик вакансий и планировщик живут в этом же процессе (один воркер uvicorn), отдельного сервиса нет.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT:?}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  # Перехватывает все письма локально: реальные адреса ничего не получают.
+  mailpit:
+    image: ${MAILPIT_IMAGE:?}
+    ports:
+      - "${MAILPIT_UI_PORT:?}:8025"
+
+  # Резервное копирование (ТЗ п. 4.2.6) не входит в объём подключения БД.
+  postgres:
+    image: ${POSTGRES_IMAGE:?}
+    shm_size: ${POSTGRES_SHM_SIZE:?}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?}
+      POSTGRES_USER: ${POSTGRES_USER:?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    ports:
+      - "127.0.0.1:${POSTGRES_HOST_PORT:?}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:

@@ -7,3 +7,9 @@
 
 # CI (запускает тесты, которые хранятся только локально)
 .gitlab-ci.yml
+
+# Локальные веса моделей (make models)
+models/
+
+# Локальные значения docker-compose (шаблон: .env.example)
+.env
