@@ -96,7 +96,9 @@ class PgCollectionRunRepository:
         """Последний запуск с ``complete = true``."""
         row = await self._db.pool.fetchrow(
             sql_template(
-                "SELECT {cols} FROM ingestion_run WHERE complete ORDER BY snapshot_at DESC LIMIT 1", cols=_COLUMNS
+                """SELECT {cols} FROM ingestion_run WHERE complete AND status='success'
+                ORDER BY snapshot_at DESC LIMIT 1""",
+                cols=_COLUMNS,
             )
         )
         return _run(row) if row else None

@@ -176,6 +176,7 @@ class VacancyRepository(Protocol):
         *,
         keep_analysis: Collection[str] = (),
         ingestion_run_id: str | None = None,
+        checkpoint: tuple[str, int] | None = None,
     ) -> UpsertResult:
         """Атомарно записывает пакет вакансий.
 

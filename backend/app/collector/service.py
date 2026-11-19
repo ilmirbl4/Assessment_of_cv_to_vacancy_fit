@@ -76,7 +76,9 @@ class CollectionService:
             effective = mode if last is not None else RunMode.FULL
             now = self._clock.now()
             modified_from = (
-                last.snapshot_at - INCREMENTAL_OVERLAP if (last and effective == RunMode.INCREMENTAL) else None
+                last.snapshot_at - timedelta(minutes=self._settings.collector_overlap_min)
+                if (last and effective == RunMode.INCREMENTAL)
+                else None
             )
             run = CollectionRun(
                 id=str(uuid.uuid4()),
@@ -95,6 +97,10 @@ class CollectionService:
     async def run_blocking(self, mode: RunMode) -> CollectionRun:
         """Запускает сбор и дожидается результата (планировщик и тесты)."""
         run = await self.start_run(mode)
+        return await self.wait_run(run)
+
+    async def wait_run(self, run: CollectionRun) -> CollectionRun:
+        """Дожидается уже зарегистрированного запуска."""
         if self._current is not None:
             await self._current
         finished = await self._runs.list_started_since(run.started_at)
@@ -133,12 +139,20 @@ class CollectionService:
                 crawl = await asyncio.to_thread(crawler.run, run.snapshot_at, run.modified_from)
             finally:
                 client.close()
+            if not self._settings.collector_industry_list and len(seen) < crawl.api_total:
+                crawl.complete = False
+                crawl.failed.append(f"Получено {len(seen)} уникальных вакансий из {crawl.api_total}")
             deactivated = 0
             notes = list(crawl.failed[:5])
             skipped = False
             if run.mode == RunMode.FULL:
                 covered = len(seen) >= self._settings.collector_min_coverage * crawl.api_total
-                if crawl.complete and covered:
+                if (
+                    crawl.complete
+                    and covered
+                    and counters["errors"] == 0
+                    and not self._settings.collector_industry_list
+                ):
                     deactivated = await self._vacancies.deactivate_missing(seen, self._clock.now())
                 else:
                     skipped = True

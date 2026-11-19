@@ -1,0 +1,1 @@
+"""Recoverable application startup."""

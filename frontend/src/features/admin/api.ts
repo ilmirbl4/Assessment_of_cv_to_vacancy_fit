@@ -39,8 +39,8 @@ export function useSpeed() {
  * @param from начало периода ГГГГ-ММ-ДД
  * @param to конец периода ГГГГ-ММ-ДД
  */
-export function useDrift(from?: string, to?: string) {
-  return useQuery({ queryKey: ['admin', 'drift', from ?? null, to ?? null], queryFn: () => api.adminDrift(from, to) });
+export function useDrift(from?: string, to?: string, batch?: string) {
+  return useQuery({ queryKey: ['admin', 'drift', from ?? null, to ?? null, batch ?? null], queryFn: () => api.adminDrift(from, to, batch) });
 }
 
 /**
@@ -58,7 +58,7 @@ export function inputsDrifted(data: DriftDashboard): boolean {
 
 /** Превышает ли какой-либо PSI порог (строго больше). */
 export function psiExceeded(data: DriftDashboard): boolean {
-  return data.indicators.some((i) => i.psi > data.psi_threshold);
+  return data.indicators.some((i) => i.psi !== null && i.psi > data.psi_threshold);
 }
 
 /** Превышает ли ROC-AUC последнего периода порог (строго больше). */
@@ -69,7 +69,7 @@ export function rocExceeded(data: DriftDashboard): boolean {
 
 /** Отвергает ли тест Колмогорова — Смирнова равенство распределений оценок кросс-энкодера (p < α). */
 export function scoresDrifted(data: DriftDashboard): boolean {
-  return data.model_scores.p_value < data.model_scores.alpha;
+  return data.model_scores.p_value !== null && data.model_scores.p_value < data.model_scores.alpha;
 }
 
 /**
@@ -82,8 +82,8 @@ export function favoriteRateSummary(data: DriftDashboard) {
   const withFavorite = days.reduce((sum, d) => sum + d.runs_with_favorite, 0);
   const share = runs === 0 ? null : withFavorite / runs;
   // Округление убирает погрешность вычитания дробей (0,28 − 0,23 не должно давать 0,0500…01).
-  const drop = share === null ? 0 : Math.round((reference_share - share) * 10_000) / 10_000;
-  return { runs, withFavorite, share, change: share === null ? null : share - reference_share, dropped: drop > max_drop };
+  const drop = share === null || reference_share === null ? 0 : Math.round((reference_share - share) * 10_000) / 10_000;
+  return { runs, withFavorite, share, change: share === null || reference_share === null ? null : share - reference_share, dropped: drop > max_drop };
 }
 
 /** Снизилась ли доля подборов с избранным сильнее допустимого (строго больше). */

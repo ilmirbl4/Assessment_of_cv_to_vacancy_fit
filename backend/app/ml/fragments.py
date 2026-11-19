@@ -105,7 +105,7 @@ def _hard_split(text: str, start: int, end: int) -> list[tuple[int, int]]:
 class RuleResumeSegmenter:
     """Правила инструкции разметки 2.2: строки, предложения (razdel), склейка коротких, разбиение длинных."""
 
-    version = "rules-seg-2"
+    version = "rules-seg-3-exact-quotes"
 
     def split(self, text: str) -> list[ResumeFragment]:
         """Нарезает резюме на фрагменты (не больше 400) с непрерывной нумерацией ``ord``."""
@@ -116,7 +116,7 @@ class RuleResumeSegmenter:
         seen: set[str] = set()
         for start, end in spans:
             start, end = _trim(text, start, end)
-            fragment = " ".join(text[start:end].split())
+            fragment = text[start:end]
             key = normalize(fragment)
             if not any(ch.isalpha() for ch in fragment) or key in seen:
                 continue

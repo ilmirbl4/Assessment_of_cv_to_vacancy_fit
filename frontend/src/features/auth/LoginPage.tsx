@@ -50,7 +50,7 @@ export function LoginPage() {
     setResending(true);
     try {
       await api.resendConfirmation(form.getValues('email').trim());
-      toast('Письмо отправлено повторно');
+      toast('Запрос принят. Повторная отправка доступна раз в минуту.');
     } catch (e) {
       toast(errorMessage(e), 'danger');
     } finally {

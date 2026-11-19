@@ -33,7 +33,8 @@ export function DriftPage() {
   const [params, setParams] = useSearchParams();
   const from = params.get('from') ?? undefined;
   const to = params.get('to') ?? undefined;
-  const query = useDrift(from, to);
+  const batch = params.get('batch') ?? undefined;
+  const query = useDrift(from, to, batch);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [errors, setErrors] = useState<Partial<Draft>>({});
   const today = toIsoDate();
@@ -57,7 +58,7 @@ export function DriftPage() {
       return;
     }
     setErrors({});
-    setParams({ from: next.from, to: next.to });
+    setParams({ from: next.from, to: next.to, ...(batch ? { batch } : {}) });
   }
 
   function preset(days: number) {
@@ -85,6 +86,8 @@ export function DriftPage() {
         </div>
         {query.data ? (
           <p className="mt-3 text-sm text-text-muted">
+            Эталон: {query.data.reference_id ?? '—'}; вакансий: {query.data.reference_size ?? '—'} / {query.data.current_size ?? '—'}.{' '}
+            {batch ? <>Пакет: {batch}. <button onClick={() => setParams({ from: shown.from, to: shown.to })}>Показать весь период</button> </> : null}
             Эталонный период: {formatDate(query.data.reference_period.from)} – {formatDate(query.data.reference_period.to)}
           </p>
         ) : null}
@@ -115,7 +118,7 @@ export function DriftPage() {
 /** Карточки-разделы дашборда с ключевыми значениями; адрес раздела сохраняет выбранный период. */
 function DriftSections({ data }: { data: DriftDashboard }) {
   const { search } = useLocation();
-  const maxPsi = Math.max(...data.indicators.map((i) => i.psi), 0);
+  const maxPsi = Math.max(...data.indicators.map((i) => i.psi ?? 0), 0);
   const lastRoc = data.adversarial.periods.at(-1)?.roc_auc;
   const favorites = favoriteRateSummary(data);
   const p = formatPValue(data.model_scores.p_value);
@@ -129,24 +132,24 @@ function DriftSections({ data }: { data: DriftDashboard }) {
           title: 'Входные данные',
           description: 'PSI вакансий и резюме, состязательная валидация',
           summary: `PSI до ${formatDecimal(maxPsi)}${lastRoc === undefined ? '' : ` · ROC-AUC ${formatDecimal(lastRoc)}`}`,
-          status: badge(inputsDrifted(data)),
+          status: data.indicators.every((i) => i.psi === null) ? <span>Нет сравнения</span> : badge(inputsDrifted(data)),
         },
         {
           to: { pathname: '/admin/drift/model', search },
           title: 'Выходы модели',
           description: 'Оценки кросс-энкодера, тест Колмогорова — Смирнова',
-          summary: `D = ${formatDecimal(data.model_scores.statistic)} · p ${p.startsWith('<') ? p : `= ${p}`}`,
-          status: badge(scoresDrifted(data)),
+          summary: data.model_scores.statistic === null ? (data.model_scores.reason ?? 'Недостаточно данных') : `D = ${formatDecimal(data.model_scores.statistic)} · p ${p.startsWith('<') ? p : `= ${p}`}`,
+          status: data.model_scores.statistic === null ? <span>Нет сравнения</span> : badge(scoresDrifted(data)),
         },
         {
           to: { pathname: '/admin/drift/feedback', search },
           title: 'Отклик пользователей',
           description: 'Доля подборов с добавлением в избранное',
           summary:
-            favorites.share === null
+            favorites.share === null || data.favorite_rate.reference_share === null
               ? 'Подборов за период нет'
               : `${formatPercent(favorites.share * 100)} при эталоне ${formatPercent(data.favorite_rate.reference_share * 100)}`,
-          status: badge(favorites.dropped),
+          status: data.favorite_rate.reference_share === null || favorites.share === null ? <span>Нет сравнения</span> : badge(favorites.dropped),
         },
       ]}
     />

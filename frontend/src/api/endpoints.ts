@@ -51,6 +51,6 @@ export const api = {
   adminCollection: (days = 30) => request<CollectionDashboard>('GET', '/admin/collection', { query: { days } }),
   startCollection: () => request<{ run_id: string }>('POST', '/admin/collection/runs'),
   adminSpeed: (days = 30) => request<SpeedDashboard>('GET', '/admin/matching-speed', { query: { days } }),
-  adminDrift: (from?: string, to?: string) =>
-    request<DriftDashboard>('GET', '/admin/drift', { query: { from, to } }),
+  adminDrift: (from?: string, to?: string, batch?: string) =>
+    request<DriftDashboard>('GET', '/admin/drift', { query: { from, to, batch } }),
 };

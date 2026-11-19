@@ -1,0 +1,27 @@
+services:
+  proxy:
+    image: ${CADDY_IMAGE:-caddy:2.10.2-alpine}
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [frontend]
+  backup:
+    image: ${POSTGRES_IMAGE:-pgvector/pgvector@sha256:131dcf7ff6a900545df8e7e092c270aa8c6db2f2c818e408cb45ec21316b74e6}
+    entrypoint: ["/bin/sh", "/opt/backup/backup.sh"]
+    restart: unless-stopped
+    env_file: [deploy/db.env, deploy/backup.env]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    volumes:
+      - backups:/backups
+      - ./deploy/backup.sh:/opt/backup/backup.sh:ro
+      - ./deploy/restore.sh:/opt/backup/restore.sh:ro
+volumes:
+  caddy_data:
+  caddy_config:
+  backups:

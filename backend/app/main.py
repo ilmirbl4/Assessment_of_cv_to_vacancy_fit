@@ -13,45 +13,18 @@ from fastapi import FastAPI
 
 from app.api.errors import register_handlers
 from app.api.middleware import RequestGuardMiddleware, configure_logging
-from app.api.routers import auth, health, matching, resume
-from app.collector.scheduler import Scheduler
+from app.api.routers import admin, auth, health, matching, resume
+from app.bootstrap.service import bootstrap
 from app.collector.service import ClientFactory
 from app.config import Settings
-from app.container import Container, build_container
-from app.db.migrate import migrate
+from app.db.database import Database
 from app.domain.clock import Clock
-from app.ml.factory import MlComponents, model_specs
-from app.seed.seeder import seed_dataset, seed_demo, seed_synthetic
+from app.ml.factory import MlComponents
 from app.services.email import EmailSender
 
 log = logging.getLogger("app.main")
 
 API_PREFIX = "/api/v1"
-
-
-async def _startup(container: Container) -> asyncio.Task[None] | None:
-    s = container.settings
-    await container.auth.ensure_admin()
-    await container.resumes.recover_stuck()
-    await container.collection.recover()
-    if s.seed_demo_data:
-        await seed_demo(container)
-    if s.seed_vacancies_dir:
-        await seed_dataset(container, s.seed_vacancies_dir, s.seed_vacancies_limit)
-    if s.seed_synthetic_vacancies:
-        await seed_synthetic(container, s.seed_synthetic_vacancies)
-    if not s.collector_enabled:
-        return None
-    has_complete = await container.repos.collection_runs.get_last_complete() is not None
-    scheduler = Scheduler(
-        container.collection,
-        container.clock,
-        s.collector_incremental_interval_min,
-        s.collector_full_run_time,
-        s.app_timezone,
-        has_complete_run=has_complete,
-    )
-    return asyncio.create_task(scheduler.run_forever(), name="collector-scheduler")
 
 
 def create_app(
@@ -65,30 +38,38 @@ def create_app(
     """Создаёт приложение; параметры позволяют тестам подменить часы, ML, почту и источник вакансий."""
     settings = settings or Settings()
     configure_logging(settings.log_level)
-    container = build_container(settings, clock=clock, ml=ml, sender=sender, client_factory=client_factory)
+    if not settings.database_url:
+        raise ValueError("Задайте DATABASE_URL в backend/.env")
 
     @asynccontextmanager
-    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-        database = container.database
-        scheduler_task: asyncio.Task[None] | None = None
+    async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+        database = Database(settings.database_url, settings.db_pool_min, settings.db_pool_max)
+        app.state.bootstrap = dict(phase="database", database_ready=False, matching_ready=False, error=None)
+        app.state.scheduler = None
+        task = asyncio.create_task(
+            bootstrap(app, database, settings, clock=clock, ml=ml, sender=sender, client_factory=client_factory)
+        )
         try:
-            if database is not None:
-                await database.connect()
-                if settings.db_auto_migrate:
-                    async with database.pool.acquire() as conn:
-                        await migrate(conn)
-            await container.repos.models.activate(model_specs(container.ml, settings))
-            scheduler_task = await _startup(container)
             yield
         finally:
-            container.collection.request_stop()
-            if scheduler_task is not None:
-                scheduler_task.cancel()
+            container = getattr(app.state, "container", None)
+            if container:
+                container.controller.stop = True
+                container.collection.request_stop()
+            if app.state.scheduler:
+                app.state.scheduler.cancel()
                 with contextlib.suppress(asyncio.CancelledError):
-                    await scheduler_task
-            await container.tasks.shutdown()
-            if database is not None:
-                await database.close()
+                    await app.state.scheduler
+            if container and container.controller.current and not container.controller.current.done():
+                await container.controller.current
+            if not task.done():
+                task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await task
+            if container:
+                await container.tasks.shutdown()
+                container.ml._executor.shutdown(wait=True)
+            await database.close()
 
     docs = settings.docs_enabled
     app = FastAPI(
@@ -101,12 +82,11 @@ def create_app(
         swagger_ui_oauth2_redirect_url=None,
         lifespan=lifespan,
     )
-    app.state.container = container
     register_handlers(app)
     origin = urlsplit(settings.public_base_url)
     trusted = [*settings.trusted_origin_list, f"{origin.scheme}://{origin.netloc}"]
     app.add_middleware(RequestGuardMiddleware, trusted_origins=trusted)
-    for module in (health, auth, resume, matching):
+    for module in (health, auth, resume, matching, admin):
         app.include_router(module.router, prefix=API_PREFIX)
     return app
 

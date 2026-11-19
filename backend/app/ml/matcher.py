@@ -6,6 +6,8 @@ import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 
+import numpy as np
+
 from app.domain.models import (
     MatchResult,
     RequirementStatus,
@@ -13,8 +15,7 @@ from app.domain.models import (
     RequirementVerdict,
     VacancyRequirement,
 )
-from app.ml.interfaces import PairScorer
-from app.ml.text import stems
+from app.ml.interfaces import BiEncoder, PairScorer
 
 
 def round_half_up(value: float) -> int:
@@ -78,35 +79,50 @@ class MatcherConfig:
 class RequirementMatcher:
     """Выносит вердикты по требованиям; все пары оцениваются одним пакетным вызовом."""
 
-    def __init__(self, scorer: PairScorer, config: MatcherConfig) -> None:
+    def __init__(self, scorer: PairScorer, config: MatcherConfig, encoder: BiEncoder) -> None:
         """Создаёт сопоставитель."""
         self._scorer = scorer
+        self._encoder = encoder
         self._config = config
 
     def match(
-        self, vacancies: Sequence[tuple[str, Sequence[VacancyRequirement]]], phrases: Sequence[str]
+        self,
+        vacancies: Sequence[tuple[str, Sequence[VacancyRequirement]]],
+        phrases: Sequence[str],
+        prepared_vectors: Mapping[str, Sequence[float]] | None = None,
     ) -> list[MatchResult]:
         """Сопоставляет вакансии (идентификатор и требования) с фразами резюме.
 
         Args:
             vacancies: пары «идентификатор вакансии — требования».
             phrases: тексты фрагментов резюме; позиция фразы равна ``ord`` фрагмента.
+            prepared_vectors: заранее вычисленные векторы текстов, если есть.
 
         Returns:
             Результаты в порядке ``vacancies``.
         """
-        phrase_stems = [stems(p) for p in phrases]
+        unique_texts = list(dict.fromkeys([*phrases, *(r.text for _, reqs in vacancies for r in reqs)]))
+        vectors = dict(prepared_vectors or {})
+        missing_texts = [text for text in unique_texts if text not in vectors]
+        if phrases and missing_texts:
+            vectors.update(zip(missing_texts, self._encoder.encode(missing_texts), strict=True))
+        phrase_vectors = np.asarray([vectors[p] for p in phrases], dtype=np.float32)
+        pair_positions: dict[tuple[str, str], int] = {}
         pairs: list[tuple[str, str]] = []
         index: list[list[tuple[int, int]]] = []  # на каждое требование: (позиция фразы, позиция пары)
         for _, requirements in vacancies:
             for requirement in requirements:
-                req_stems = stems(requirement.text)
-                overlaps = [(-len(req_stems & ps), i) for i, ps in enumerate(phrase_stems)]
-                ranked = [i for _, i in sorted(overlaps)[: self._config.phrases_per_requirement]]
+                similarity = phrase_vectors @ np.asarray(vectors[requirement.text]) if phrases else []
+                ranked = sorted(range(len(phrases)), key=lambda i: (-float(similarity[i]), i))[
+                    : self._config.phrases_per_requirement
+                ]
                 item: list[tuple[int, int]] = []
                 for phrase_pos in ranked:
-                    item.append((phrase_pos, len(pairs)))
-                    pairs.append((requirement.text, phrases[phrase_pos]))
+                    pair = (requirement.text, phrases[phrase_pos])
+                    if pair not in pair_positions:
+                        pair_positions[pair] = len(pairs)
+                        pairs.append(pair)
+                    item.append((phrase_pos, pair_positions[pair]))
                 index.append(item)
         scores = self._scorer.score(pairs) if pairs else []
 

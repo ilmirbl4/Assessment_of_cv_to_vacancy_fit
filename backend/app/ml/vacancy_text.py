@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import html
+import json
 import re
 
 _ZERO_WIDTH = re.compile("[​‌‍⁠﻿­]")
@@ -43,10 +44,12 @@ def compose_sections(requirements: str, duties: str) -> str:
 
 
 def vacancy_embedding_text(title: str, requirements: str, duties: str) -> str:
-    """Текст для би-энкодера: название, пустая строка, секции."""
-    return f"{title}\n\n{compose_sections(requirements, duties)}"
+    """Секции в формате импорта; при пустых секциях используется название."""
+    return compose_sections(requirements, duties) or title
 
 
 def content_hash(title: str, requirements: str, duties: str) -> bytes:
     """SHA-256 от названия и нормализованных секций."""
-    return hashlib.sha256("\x1f".join((title, requirements, duties)).encode("utf-8")).digest()
+    return hashlib.sha256(
+        json.dumps([title, requirements, duties], ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    ).digest()

@@ -18,6 +18,7 @@ const toneText = { success: 'text-success', warning: 'text-warning', neutral: 't
 export function MatchAside({ vacancy }: { vacancy: VacancyDetail }) {
   const add = useAddFavorite(vacancy.id);
   const percent = vacancy.match_percent;
+  const noRequirements = vacancy.requirements.length === 0;
   const covered = vacancy.requirements.filter((r) => r.status === 'covered').length;
   const partial = vacancy.requirements.filter((r) => r.status === 'partially_covered').length;
   const tone = percent === null ? 'neutral' : (matchTone(percent) as keyof typeof toneText);
@@ -26,13 +27,18 @@ export function MatchAside({ vacancy }: { vacancy: VacancyDetail }) {
       {percent !== null ? (
         <>
           <h2 className="text-sm font-medium text-text-muted">Соответствие резюме</h2>
-          <p className={`mt-1 text-3xl font-semibold tabular ${toneText[tone]}`}>{formatPercent(percent)}</p>
-          <div className="mt-3">
-            <ProgressBar percent={percent} />
-          </div>
+          <p className={`mt-1 text-3xl font-semibold tabular ${toneText[tone]}`}>
+            {noRequirements ? '—' : formatPercent(percent)}
+          </p>
+          {noRequirements ? null : (
+            <div className="mt-3">
+              <ProgressBar percent={percent} />
+            </div>
+          )}
           <p className="mt-2 text-sm text-text-muted">
-            Покрыто {covered} из {vacancy.requirements.length}
-            {partial > 0 ? `, частично — ${partial}` : ''}
+            {noRequirements
+              ? 'Модель не выделила требований в тексте вакансии — процент покрытия не рассчитан.'
+              : `Покрыто ${covered} из ${vacancy.requirements.length}${partial > 0 ? `, частично — ${partial}` : ''}`}
           </p>
         </>
       ) : null}

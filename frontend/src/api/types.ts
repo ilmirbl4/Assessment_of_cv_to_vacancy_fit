@@ -122,23 +122,29 @@ export interface DistributionBin {
   share: number;
 }
 export type DriftEntity = 'vacancies' | 'resumes';
-export interface DriftIndicator {
-  key: 'skills_per_vacancy' | 'professional_area' | 'vacancy_embeddings' | 'resume_embeddings';
+export interface MetricAvailability {
+  status?: 'ready' | 'insufficient_data' | 'reference_missing' | 'reference_incompatible';
+  reason?: string | null;
+  reference_size?: number;
+  current_size?: number;
+}
+export interface DriftIndicator extends MetricAvailability {
+  key: 'skills_per_vacancy' | 'professional_area' | 'vacancy_embeddings' | 'resume_embeddings' | 'unknown_skills';
   name: string;
   /** Чьё распределение сравнивается: вакансий или резюме. */
   entity: DriftEntity;
   /** Что откладывается по оси корзин (для эмбеддингов — косинусное расстояние до центроида эталона). */
   bins_label: string;
-  psi: number;
+  psi: number | null;
   reference: DistributionBin[];
   current: DistributionBin[];
 }
 
 /** Двухвыборочный тест Колмогорова — Смирнова для оценок кросс-энкодера. */
-export interface ScoreDrift {
+export interface ScoreDrift extends MetricAvailability {
   /** Статистика D — наибольшее расхождение эмпирических функций распределения. */
-  statistic: number;
-  p_value: number;
+  statistic: number | null;
+  p_value: number | null;
   /** Уровень значимости: предупреждение, если p_value < alpha. */
   alpha: number;
   reference_size: number;
@@ -155,19 +161,24 @@ export interface FavoriteRateDay {
   share: number;
 }
 /** Доля подборов, после которых соискатель добавил хотя бы одну вакансию в избранное. */
-export interface FavoriteRate {
-  reference_share: number;
+export interface FavoriteRate extends MetricAvailability {
+  reference_share: number | null;
   /** Допустимое снижение доли относительно эталона (в долях, 0.05 = 5 п. п.). */
   max_drop: number;
   days: FavoriteRateDay[];
 }
 
 export interface DriftDashboard {
+  reference_id?: string;
+  reference_size?: number;
+  current_size?: number;
+  batch_id?: string | null;
+  checked_at?: string;
   reference_period: { from: string; to: string };
   current_period: { from: string; to: string };
   psi_threshold: number;
   indicators: DriftIndicator[];
-  adversarial: {
+  adversarial: MetricAvailability & {
     roc_auc_threshold: number;
     periods: { from: string; to: string; roc_auc: number }[];
     top_features: { name: string; importance: number }[];

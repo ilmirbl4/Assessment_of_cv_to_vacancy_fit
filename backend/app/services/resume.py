@@ -5,7 +5,11 @@ from __future__ import annotations
 import asyncio
 import logging
 import uuid
+from dataclasses import asdict
 from datetime import timedelta
+from typing import Any
+
+import numpy as np
 
 from app.config import MAX_RESUME_BYTES, Settings
 from app.documents.extract import (
@@ -20,6 +24,7 @@ from app.domain.clock import Clock
 from app.domain.models import Embedding, Resume, ResumeFragment, ResumeStatus, User
 from app.ml.factory import MlComponents
 from app.repositories.factory import Repositories
+from app.repositories.postgres._mapping import vector_to_text
 from app.services import errors
 from app.services.tasks import TaskRegistry
 
@@ -104,8 +109,16 @@ class ResumeService:
         fragments: tuple[ResumeFragment, ...] = ()
         embedding = None
         try:
-            fragments, embedding = await asyncio.wait_for(
-                asyncio.to_thread(analyse_resume, self._ml, resume.text), self._settings.resume_processing_timeout_s
+            analysis = await asyncio.wait_for(
+                self.stage_analysis(resume.id, resume.text), self._settings.resume_processing_timeout_s
+            )
+            if analysis is None:
+                return
+            from app.repositories.postgres._mapping import vector_from_text
+
+            embedding = vector_from_text(str(analysis["embedding"]))
+            fragments = tuple(
+                ResumeFragment(f["ord"], f["text"], f["span_start"], f["span_end"]) for f in analysis["fragments"]
             )
             if not fragments:
                 status, message, embedding = ResumeStatus.FAILED, MSG_NO_PHRASES, None
@@ -114,7 +127,7 @@ class ResumeService:
         except Exception:
             log.exception("Ошибка обработки резюме")
             status, message = ResumeStatus.FAILED, MSG_PROCESSING_FAILED
-        await self._repos.resumes.complete_processing(
+        stored = await self._repos.resumes.complete_processing(
             resume.user_id,
             resume.id,
             status=status.value,
@@ -124,6 +137,50 @@ class ResumeService:
             model_version=self._ml.resume_model_version,
             processed_at=self._clock.now(),
         )
+
+        if stored and status == ResumeStatus.READY and embedding is not None:
+            projection = np.asarray(embedding, dtype=float)[:32]
+            await self._repos.resumes._db.pool.execute(
+                "INSERT INTO resume_observation(pipeline_id,features) VALUES($1,$2)",
+                self._ml.resume_model_version,
+                {"projection": projection.tolist()},
+            )
+
+    async def stage_analysis(self, resume_id: Any, text: Any) -> Any:
+        """Persist versioned fragments and the embedding, cascading with the resume."""
+        db = self._repos.resumes._db
+        existing = await db.pool.fetchrow(
+            "SELECT * FROM resume_analysis WHERE resume_id=$1 AND pipeline_id=$2",
+            resume_id,
+            self._ml.resume_model_version,
+        )
+        if existing:
+            return existing
+
+        def analyse() -> Any:
+            fragments = tuple(self._ml.segmenter.split(text))
+            vectors = self._ml.bi_encoder.encode([text, *[f.text for f in fragments]])
+            return fragments, vectors
+
+        fragments, vectors = await self._ml.run(analyse)
+        async with db.pool.acquire() as conn, conn.transaction():
+            # A concurrent replacement/deletion must not resurrect personal data.
+            if not await conn.fetchval("SELECT id FROM resume WHERE id=$1 FOR UPDATE", resume_id):
+                return None
+            row = await conn.fetchrow(
+                """INSERT INTO resume_analysis(resume_id,pipeline_id,model_id,dim,embedding,
+                fragments,skills,normalized_text) VALUES($1,$2,$3,$4,$5::text::halfvec,$6,$7,$8)
+                ON CONFLICT(resume_id,pipeline_id) DO UPDATE SET skills=excluded.skills RETURNING *""",
+                resume_id,
+                self._ml.resume_model_version,
+                self._repos.resumes._active.bi_id,
+                self._ml.bi_encoder.dim,
+                vector_to_text(vectors[0]),
+                [{**asdict(f), "embedding": list(v)} for f, v in zip(fragments, vectors[1:], strict=False)],
+                [],
+                text,
+            )
+        return row
 
     async def recover_stuck(self) -> int:
         """При старте переводит зависшие в ``processing`` резюме в ``failed``."""

@@ -175,4 +175,7 @@ def _total(body: dict[str, Any], headers: httpx.Headers) -> int:
     meta_total = (body.get("meta") or {}).get("total")
     if meta_total is not None:
         return int(meta_total)
-    return int(headers.get("TotalResultCount", 0))
+    header_total = headers.get("TotalResultCount")
+    if header_total is None:
+        raise ApiError("В ответе API отсутствует общее число вакансий")
+    return int(header_total)

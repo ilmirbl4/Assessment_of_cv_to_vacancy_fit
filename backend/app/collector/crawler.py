@@ -101,7 +101,9 @@ class Crawler:
                     log.exception("Обход сферы прерван")
                     self._fail(f"сфера прервана: {exc}")
         self._result.stopped = self._stop.is_set()
-        self._result.complete = not self._result.failed and len(self._done) == len(self._industries)
+        self._result.complete = (
+            not self._result.stopped and not self._result.failed and len(self._done) == len(self._industries)
+        )
         return self._result
 
     def _fail(self, message: str) -> None:
@@ -119,9 +121,9 @@ class Crawler:
         while not self._stop.is_set():
             params = {**base, "industry": code, "modifiedTo": format_param_time(hi)}
             result = self._crawl_pages(code, window, "/vacancies", params)
-            if result.failed and result.pages == 0:
+            if result.failed:
                 return
-            if not result.failed and result.total <= RESULT_WINDOW:
+            if result.total <= RESULT_WINDOW:
                 with self._lock:
                     self._done.add(code)
                 return
@@ -129,12 +131,7 @@ class Crawler:
                 self._fail(f"{code}: в окне {window} нет вакансий с date_modify")
                 return
             new_hi = plus_seconds(result.min_modified, 1)  # перекрытие на секунду, дубли уберёт upsert
-            if new_hi >= hi:
-                if result.failed:
-                    return
-                hi = self._crawl_by_regions(code, window, result.min_modified, hi, base)
-            else:
-                hi = new_hi
+            hi = self._crawl_by_regions(code, window, result.min_modified, hi, base) if new_hi >= hi else new_hi
             window += 1
 
     def _crawl_by_regions(
@@ -147,11 +144,12 @@ class Crawler:
             params.update({k: v for k, v in base.items() if k != "modifiedFrom"})
             result = self._crawl_pages(code, window, f"/vacancies/region/{region}", params)
             if result.total > RESULT_WINDOW:
-                self._warn(f"{code}/{region}: {result.total} > 10000 в одну секунду, часть записей потеряна")
+                self._fail(f"{code}/{region}: {result.total} > 10000 в одну секунду, обход неполный")
         return plus_seconds(t_min, -1)
 
     def _crawl_pages(self, code: str, window: int, path: str, params: dict[str, Any]) -> _Window:
         res = _Window()
+        seen: set[str] = set()
         for offset in range(PAGES_PER_WINDOW):
             if self._stop.is_set():
                 break
@@ -165,6 +163,20 @@ class Crawler:
             if offset == 0:
                 res.total = resp.total
             res.pages += 1
+            expected = min(PAGE_LIMIT, max(0, res.total - offset * PAGE_LIMIT))
+            ids = {str(vacancy.get("id") or "") for vacancy in vacancies}
+            if resp.total != res.total or len(vacancies) != expected or res.total < 0:
+                self._fail(
+                    f"{code}: неполная или изменившаяся выдача (окно {window}, offset {offset}): "
+                    f"ожидалось {expected} записей, получено {len(vacancies)}, всего {resp.total}"
+                )
+                res.failed = True
+                break
+            if "" in ids or len(ids) != len(vacancies) or not seen.isdisjoint(ids):
+                self._fail(f"{code}: пустые или повторные ID (окно {window}, offset {offset})")
+                res.failed = True
+                break
+            seen.update(ids)
             for vacancy in vacancies:
                 try:
                     moment = parse_date_modify(vacancy["date_modify"])

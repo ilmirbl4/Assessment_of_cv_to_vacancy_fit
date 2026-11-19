@@ -1,21 +1,17 @@
-.PHONY: install models run lint typecheck db-migrate
+PYTHON ?= python3
+VENV_PYTHON = .venv/bin/python
 
+.PHONY: install models run lint typecheck verify
 install:
-	uv sync
-
+	$(PYTHON) -m venv .venv
+	$(VENV_PYTHON) -m pip install -r requirements-dev.txt
 models:
-	uv run --extra ml python scripts/download_models.py
-
+	$(VENV_PYTHON) -m scripts.download_models --verify
 run:
-	uv run uvicorn app.main:app --reload --port 8000
-
+	$(VENV_PYTHON) -m uvicorn app.main:app --port 8000 --workers 1
 lint:
-	uv run ruff check . && uv run ruff format --check .
-
+	$(VENV_PYTHON) -m ruff check app scripts
+	$(VENV_PYTHON) -m ruff format --check app scripts
 typecheck:
-	uv run mypy app
-
-db-migrate:
-	uv run python -m app.db.migrate
-
-# Тесты, нагрузочные и сквозные проверки вынесены в ../../cv_vacancy_fit_dev_tools
+	$(VENV_PYTHON) -m mypy app
+verify: lint typecheck

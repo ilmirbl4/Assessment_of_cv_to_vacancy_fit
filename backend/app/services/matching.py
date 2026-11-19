@@ -9,6 +9,7 @@ import time
 import uuid
 from collections import defaultdict
 from dataclasses import dataclass, replace
+from typing import Any
 
 from app.config import MAX_PAGE, MAX_RESULTS, PAGE_SIZE, Settings
 from app.domain.clock import Clock
@@ -25,12 +26,15 @@ from app.domain.models import (
     User,
     Vacancy,
 )
-from app.ml.factory import MlComponents
+from app.ml.artifacts import fingerprint
+from app.ml.factory import MlComponents, pipeline_id
 from app.ml.matcher import MatcherConfig, RequirementMatcher
 from app.reference import EMPLOYMENT, EXPERIENCE, SCHEDULES, regions
 from app.repositories.errors import AlreadyExistsError
 from app.repositories.factory import Repositories
+from app.repositories.postgres._mapping import vector_from_text, vector_to_text
 from app.services import errors
+from app.services.match_cache import restore, serialize
 from app.services.resume import analyse_resume
 
 log = logging.getLogger("app.matching")
@@ -93,6 +97,7 @@ class MatchingService:
         self._ml = ml
         self._clock = clock
         self._settings = settings
+        self._pipeline_id = pipeline_id(ml, settings)
         self._matcher = RequirementMatcher(
             ml.scorer,
             MatcherConfig(
@@ -100,6 +105,7 @@ class MatchingService:
                 settings.ml_covered_threshold,
                 settings.ml_partial_threshold,
             ),
+            ml.bi_encoder,
         )
         self._locks: defaultdict[str, asyncio.Lock] = defaultdict(asyncio.Lock)
 
@@ -117,7 +123,7 @@ class MatchingService:
         """Пересчитывает фрагменты и вектор резюме, если версия обработки устарела (иначе другая размерность)."""
         if resume.model_version == self._ml.resume_model_version:
             return resume
-        fragments, embedding = await asyncio.to_thread(analyse_resume, self._ml, resume.text)
+        fragments, embedding = await self._ml.run(analyse_resume, self._ml, resume.text)
         now = self._clock.now()
         await self._repos.resumes.complete_processing(
             resume.user_id,
@@ -152,13 +158,96 @@ class MatchingService:
             vacancies = await self._repos.vacancies.get_many([c.id for c in candidates])
             ordered = [vacancies[c.id] for c in candidates if c.id in vacancies]
             scores = {c.id: c.score for c in candidates}
-            results = await asyncio.to_thread(self._rank, ordered, resume, scores)
+            results = await self._rank_cached(ordered, resume, scores)
             now = self._clock.now()
             run = MatchRun(str(uuid.uuid4()), user.id, resume.id, now, filters, results, top_n)
             await self._repos.match_runs.save_current(run)
             duration = int((time.perf_counter() - started) * 1000)
             await self._repos.metrics.record_matching(MatchingEvent(run.id, now, duration, len(results)))
+            db = self._repos.match_runs._db
+            await db.pool.execute("UPDATE matching_event SET pipeline_id=$2 WHERE run_id=$1", run.id, self._pipeline_id)
+            # One deterministic pair per run avoids treating all correlated pairs as independent samples.
+            verdicts = [v for r in results for v in r.verdicts]
+            if verdicts:
+                import hashlib
+
+                index = int(hashlib.sha256(run.id.encode()).hexdigest()[:8], 16) % len(verdicts)
+                await db.pool.execute(
+                    "INSERT INTO score_observation(run_id,pipeline_id,score) VALUES($1,$2,$3)",
+                    run.id,
+                    self._pipeline_id,
+                    verdicts[index].score,
+                )
         return await self._page(run, 1)
+
+    async def _rank_cached(self, vacancies: Any, resume: Any, scores: Any) -> Any:
+        db = self._repos.match_runs._db
+        cached = {
+            r["source_id"]: r
+            for r in await db.pool.fetch(
+                """SELECT v.source_id,c.content_hash,c.result
+            FROM match_cache c JOIN vacancy v ON v.id=c.vacancy_id
+            WHERE c.resume_id=$1 AND c.pipeline_id=$2 AND v.source_id=ANY($3::text[])""",
+                resume.id,
+                self._pipeline_id,
+                [v.id for v in vacancies],
+            )
+        }
+        missing = [v for v in vacancies if v.id not in cached or bytes(cached[v.id]["content_hash"]) != v.content_hash]
+        prepared = {}
+        if missing:
+            fragments = await db.pool.fetchval(
+                "SELECT fragments FROM resume_analysis WHERE resume_id=$1 AND pipeline_id=$2",
+                resume.id,
+                self._ml.resume_model_version,
+            )
+            prepared.update({f["text"]: f["embedding"] for f in (fragments or [])})
+            texts = list(dict.fromkeys(r.text for v in missing for r in v.requirements))
+            hashes = {fingerprint(t): t for t in texts}
+            bi_id = self._repos.models._active.bi_id
+            saved = await db.pool.fetch(
+                """SELECT text_hash,embedding::text vector FROM requirement_embedding
+                WHERE model_id=$1 AND text_hash=ANY($2::text[])""",
+                bi_id,
+                list(hashes),
+            )
+            prepared.update({hashes[r["text_hash"]]: vector_from_text(r["vector"]) for r in saved})
+            new_texts = [text for text in texts if text not in prepared]
+            if new_texts:
+                vectors = await self._ml.run(self._ml.bi_encoder.encode, new_texts)
+                async with db.pool.acquire() as conn, conn.transaction():
+                    for text, vector in zip(new_texts, vectors, strict=True):
+                        prepared[text] = vector
+                        await conn.execute(
+                            """INSERT INTO requirement_embedding(text_hash,model_id,dim,embedding)
+                            VALUES($1,$2,$3,$4::text::halfvec) ON CONFLICT DO NOTHING""",
+                            fingerprint(text),
+                            bi_id,
+                            self._ml.bi_encoder.dim,
+                            vector_to_text(vector),
+                        )
+        computed = (
+            await self._ml.run(self._matcher.match, [(v.id, v.requirements) for v in missing], resume.phrases, prepared)
+            if missing
+            else []
+        )
+        for vacancy, result in zip(missing, computed, strict=False):
+            await db.pool.execute(
+                """INSERT INTO match_cache(resume_id,vacancy_id,pipeline_id,content_hash,result)
+                SELECT r.id,v.id,$3,$4,$5 FROM resume r,vacancy v
+                WHERE r.id=$1 AND v.source_id=$2 AND v.content_hash=$4
+                ON CONFLICT(resume_id,vacancy_id,pipeline_id)
+                DO UPDATE SET content_hash=excluded.content_hash,result=excluded.result""",
+                resume.id,
+                vacancy.id,
+                self._pipeline_id,
+                vacancy.content_hash,
+                serialize(result),
+            )
+        results = [restore(v, cached[v.id]["result"]) for v in vacancies if v not in missing] + computed
+        dates = {v.id: v.published_at.toordinal() for v in vacancies}
+        results.sort(key=lambda r: (-r.match_percent, -dates[r.vacancy_id], r.vacancy_id))
+        return tuple(replace(r, retrieval_score=scores.get(r.vacancy_id, 0)) for r in results[:MAX_RESULTS])
 
     def _rank(self, vacancies: list[Vacancy], resume: Resume, scores: dict[str, float]) -> tuple[MatchResult, ...]:
         dates = {v.id: v.published_at.toordinal() for v in vacancies}
@@ -208,7 +297,7 @@ class MatchingService:
             stored = next((r for r in run.results if r.vacancy_id == vacancy_id), None)
             if stored is not None:
                 return VacancyDetailData(vacancy, favorite, stored.match_percent, stored.verdicts)
-        result = (await asyncio.to_thread(self._matcher.match, [(vacancy.id, vacancy.requirements)], resume.phrases))[0]
+        result = (await self._rank_cached([vacancy], resume, {}))[0]
         return VacancyDetailData(vacancy, favorite, result.match_percent, result.verdicts)
 
     # ---------- избранное ----------

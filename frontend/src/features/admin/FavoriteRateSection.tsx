@@ -28,6 +28,7 @@ export function formatPoints(delta: number, signed = true): string {
 export function FavoriteRateSection({ data }: { data: DriftDashboard }) {
   const { reference_share, max_drop, days } = data.favorite_rate;
   const summary = favoriteRateSummary(data);
+  if (reference_share === null) return <div><h3>Отклик пользователей</h3><p>{data.favorite_rate.reason ?? 'Эталон не подключён'}</p><p>Завершённых подборов: {summary.runs}; с избранным: {summary.withFavorite}</p></div>;
   const threshold = reference_share - max_drop;
   const points = days.map((d) => ({ label: shortDate(d.date), share: Math.round(d.share * 1000) / 10 }));
   const pct = (share: number) => formatPercent(share * 100);
@@ -88,7 +89,7 @@ export function FavoriteRateSection({ data }: { data: DriftDashboard }) {
         <LineChart data={points} margin={{ top: 8, right: 96, bottom: 0, left: 0 }}>
           <CartesianGrid vertical={false} stroke="var(--color-chart-grid)" />
           <XAxis dataKey="label" tick={axisTick} tickLine={false} minTickGap={24} />
-          <YAxis tick={axisTick} tickLine={false} axisLine={false} domain={[0, 40]} ticks={[0, 10, 20, 30, 40]} tickFormatter={(v) => `${v}%`} />
+          <YAxis tick={axisTick} tickLine={false} axisLine={false} domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
           <Tooltip contentStyle={tooltipStyle} formatter={(v) => formatPercent(Number(v))} />
           <ReferenceLine
             y={reference_share * 100}

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import asyncio
 import logging
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field, replace
@@ -88,7 +87,9 @@ class VacancyIngestor:
         self._timezone = timezone
         self._seen_values: set[str] = set()
 
-    async def ingest(self, batch: Sequence[Mapping[str, Any]], run_id: str | None = None) -> IngestResult:
+    async def ingest(
+        self, batch: Sequence[Mapping[str, Any]], run_id: str | None = None, checkpoint: tuple[str, int] | None = None
+    ) -> IngestResult:
         """Нормализует и сохраняет пакет; неизменённые не пересчитываются, ошибочные считаются и пропускаются."""
         result = IngestResult()
         now = self._clock.now()
@@ -104,6 +105,8 @@ class VacancyIngestor:
             known = unique.get(norm.id)
             if known is None or norm.date_modify > known.date_modify:
                 unique[norm.id] = norm
+        if result.errors and checkpoint:
+            raise ValueError(f"Некорректных записей в пакете: {result.errors}")
         if not unique:
             return result
         states = await self._repo.get_ingest_states(list(unique), self._ml.vacancy_model_version)
@@ -114,11 +117,13 @@ class VacancyIngestor:
             and state.analysis_fresh
             and state.content_hash == norm.content_hash
         }
-        analysed = await asyncio.to_thread(
+        analysed = await self._ml.run(
             analyse_vacancies, [n for vid, n in unique.items() if vid not in fresh], self._ml, now
         )
         kept = [base_vacancy(unique[vid], self._ml, now) for vid in fresh]
-        stored = await self._repo.upsert_batch([*analysed, *kept], keep_analysis=fresh, ingestion_run_id=run_id)
+        stored = await self._repo.upsert_batch(
+            [*analysed, *kept], keep_analysis=fresh, ingestion_run_id=run_id, checkpoint=checkpoint
+        )
         result.new, result.updated, result.unchanged = stored.new, stored.updated, stored.unchanged
         result.errors += len(stored.failed_ids)
         return result

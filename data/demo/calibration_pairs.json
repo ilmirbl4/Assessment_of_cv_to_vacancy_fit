@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "created": "2026-11-18",
+  "provenance": "Ручной демонстрационный набор пар для предварительной проверки кросс-энкодера. Не является размеченной обучающей выборкой и не используется для дообучения.",
+  "labels": {
+    "covered": "требование выполнено",
+    "partially_covered": "выполнено частично или с оговоркой",
+    "not_covered": "требование не выполнено"
+  },
+  "pairs": [
+    {
+      "id": "python-experience",
+      "requirement": "Опыт программирования на Python",
+      "fragment": "Разрабатываю сервисы на Python более четырёх лет",
+      "label": "covered"
+    },
+    {
+      "id": "sql",
+      "requirement": "Знание SQL",
+      "fragment": "Пишу SQL-запросы и оптимизирую PostgreSQL",
+      "label": "covered"
+    },
+    {
+      "id": "docker",
+      "requirement": "Владение Docker",
+      "fragment": "Контейнеризация сервисов с помощью Docker и Docker Compose",
+      "label": "covered"
+    },
+    {
+      "id": "education",
+      "requirement": "Высшее образование",
+      "fragment": "Окончил МГТУ им. Баумана, бакалавр",
+      "label": "covered"
+    },
+    {
+      "id": "english",
+      "requirement": "Английский язык",
+      "fragment": "Английский: читаю техническую документацию",
+      "label": "covered"
+    },
+    {
+      "id": "1c",
+      "requirement": "Знание 1С",
+      "fragment": "Работал с 1С:Предприятие 8.3",
+      "label": "covered"
+    },
+    {
+      "id": "absent-java",
+      "requirement": "Знание Java",
+      "fragment": "Опыт разработки на Python и SQL",
+      "label": "not_covered"
+    },
+    {
+      "id": "absent-kubernetes",
+      "requirement": "Опыт работы с Kubernetes",
+      "fragment": "Настраивал CI/CD в GitLab, Docker не использовал",
+      "label": "not_covered"
+    },
+    {
+      "id": "negation-python",
+      "requirement": "Python не требуется",
+      "fragment": "Опыт разработки на Python более четырёх лет",
+      "label": "not_covered"
+    },
+    {
+      "id": "wrong-education",
+      "requirement": "Высшее образование",
+      "fragment": "Среднее профессиональное образование, техникум",
+      "label": "not_covered"
+    },
+    {
+      "id": "partial-experience",
+      "requirement": "Опыт работы от 5 лет",
+      "fragment": "Опыт работы 2 года на позиции разработчика",
+      "label": "partially_covered"
+    },
+    {
+      "id": "partial-teamwork",
+      "requirement": "Коммуникабельность",
+      "fragment": "Работал в команде из восьми человек, проводил code review",
+      "label": "partially_covered"
+    },
+    {
+      "id": "partial-database",
+      "requirement": "Знание PostgreSQL",
+      "fragment": "Работал с базами данных MySQL и SQLite",
+      "label": "partially_covered"
+    },
+    {
+      "id": "partial-leadership",
+      "requirement": "Опыт управления командой",
+      "fragment": "Был тимлидом небольшой команды из трёх разработчиков",
+      "label": "partially_covered"
+    },
+    {
+      "id": "partial-python-basic",
+      "requirement": "Опыт разработки на Python",
+      "fragment": "Знаю синтаксис Python на базовом уровне, коммерчески не разрабатывал",
+      "label": "partially_covered"
+    }
+  ]
+}

@@ -4,12 +4,33 @@ from __future__ import annotations
 
 import asyncio
 import json
+from urllib.parse import unquote, urlsplit
 
 import asyncpg
 
 
 async def _init_connection(conn: asyncpg.Connection) -> None:
     await conn.set_type_codec("jsonb", encoder=json.dumps, decoder=json.loads, schema="pg_catalog")
+
+
+async def ensure_database(dsn: str) -> None:
+    """При SQLSTATE 3D000 создаёт целевую БД через служебную базу postgres."""
+    try:
+        conn = await asyncpg.connect(dsn)
+    except asyncpg.InvalidCatalogNameError:
+        name = unquote(urlsplit(dsn).path.removeprefix("/"))
+        if not name or "\0" in name or len(name.encode()) > 63:
+            raise ValueError("Укажите имя целевой базы в пути DATABASE_URL") from None
+        admin = await asyncpg.connect(dsn, database="postgres")
+        try:
+            await admin.execute("SELECT pg_advisory_lock(7204117002)")
+            if not await admin.fetchval("SELECT EXISTS(SELECT FROM pg_database WHERE datname=$1)", name):
+                identifier = '"' + name.replace('"', '""') + '"'
+                await admin.execute(f"CREATE DATABASE {identifier} TEMPLATE template0 ENCODING 'UTF8'")
+        finally:
+            await admin.close()
+    else:
+        await conn.close()
 
 
 class Database:

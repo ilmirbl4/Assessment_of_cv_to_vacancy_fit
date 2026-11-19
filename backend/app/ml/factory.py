@@ -1,102 +1,132 @@
-"""Сборка ML-компонентов по настройкам."""
+"""Mandatory offline models and a bounded shared inference executor."""
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from pathlib import Path
+import asyncio
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass, field
+from functools import partial
+from typing import Any
 
 from app.config import Settings
-from app.domain.models import ModelSpec, RequirementType
-from app.ml.baseline import BaselineRequirementExtractor, HashingBiEncoder, LexicalPairScorer
+from app.domain.models import ModelSpec
+from app.ml.artifacts import fingerprint
 from app.ml.fragments import RuleResumeSegmenter
 from app.ml.interfaces import BiEncoder, PairScorer, RequirementExtractor, ResumeSegmenter
+from app.ml.normalization import VERSION as NORMALIZATION_VERSION
+from app.ml.profile import PROFILE
 
-TYPE_PREFIX = {
-    RequirementType.HARD_SKILL: "Навык",
-    RequirementType.SOFT_SKILL: "Качество",
-    RequirementType.EXPERIENCE: "Опыт",
-    RequirementType.EDUCATION: "Образование",
-    RequirementType.CERTIFICATE: "Документ",
-    RequirementType.LANGUAGE: "Язык",
+CURRENT_PROCESSING = {
+    "content_hash": "sha256-utf8-json-array-v1",
+    "mapping": "fill-bd-mapping-v1",
+    "normalization": NORMALIZATION_VERSION,
 }
-PARTIAL_CREDIT = 0.5
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(slots=True)
 class MlComponents:
-    """Набор ML-компонентов."""
+    """Shared models; only one CPU inference runs at a time."""
 
     extractor: RequirementExtractor
     segmenter: ResumeSegmenter
     bi_encoder: BiEncoder
     scorer: PairScorer
+    max_pending: int = 12
+    _pending: int = 0
+    _executor: ThreadPoolExecutor = field(default_factory=lambda: ThreadPoolExecutor(max_workers=1))
 
     @property
     def vacancy_model_version(self) -> str:
-        """Версия обработки вакансии (ТЗ п. 4.6.4)."""
-        return f"{self.extractor.version}+{self.bi_encoder.version}"
+        """Preserve the imported pipeline when its contracts are identical."""
+        if (
+            self.extractor.version == PROFILE["profiles"]["ner"]["version"]
+            and self.bi_encoder.version == PROFILE["profiles"]["encoder"]["version"]
+            and PROFILE["processing"] == CURRENT_PROCESSING
+        ):
+            return str(PROFILE["model_version"])
+        return fingerprint([self.extractor.version, self.bi_encoder.version, PROFILE["processing"]])
 
     @property
     def resume_model_version(self) -> str:
-        """Версия обработки резюме."""
-        return f"{self.segmenter.version}+{self.bi_encoder.version}"
+        """Identity of resume preparation: segmentation and the embedding model only."""
+        return fingerprint([self.segmenter.version, self.bi_encoder.version])
+
+    async def run(self, fn: Callable[..., Any], *args: Any) -> Any:
+        """Bound the queue and keep the slot until a cancelled thread actually completes."""
+        if self._pending >= self.max_pending:
+            from fastapi import HTTPException
+
+            raise HTTPException(503, "Очередь обработки заполнена. Повторите запрос позже.")
+        self._pending += 1
+        future = asyncio.get_running_loop().run_in_executor(self._executor, partial(fn, *args))
+        try:
+            return await asyncio.shield(future)
+        except asyncio.CancelledError:
+            await asyncio.shield(future)
+            raise
+        finally:
+            self._pending -= 1
 
 
 def build_ml(settings: Settings) -> MlComponents:
-    """Выбирает базовые реализации или настоящие модели по ``ML_BI_ENCODER_PATH`` и ``ML_CROSS_ENCODER_PATH``."""
-    scorer: PairScorer = LexicalPairScorer()
-    if settings.ml_cross_encoder_path:
-        from app.ml.cross_encoder import SentenceTransformersPairScorer
+    """Load all mandatory artifacts; never fall back to lexical scores."""
+    from app.ml.bi_encoder import SentenceTransformersBiEncoder
+    from app.ml.cross_encoder import SentenceTransformersPairScorer
+    from app.ml.ner import FridaRequirementExtractor
 
-        scorer = SentenceTransformersPairScorer(
-            settings.ml_cross_encoder_path, settings.ml_model_version, settings.ml_batch_size
-        )
-    bi_encoder: BiEncoder = HashingBiEncoder()
-    if settings.ml_bi_encoder_path:
-        from app.ml.bi_encoder import SentenceTransformersBiEncoder
-
-        bi_encoder = SentenceTransformersBiEncoder(
-            settings.ml_bi_encoder_path,
-            settings.ml_bi_encoder_version,
-            settings.ml_bi_encoder_max_seq_length,
-            settings.ml_batch_size,
-            settings.ml_torch_threads,
-        )
     return MlComponents(
-        extractor=BaselineRequirementExtractor(),
-        segmenter=RuleResumeSegmenter(),
-        bi_encoder=bi_encoder,
-        scorer=scorer,
+        FridaRequirementExtractor(settings.ml_ner_path, settings.ml_torch_threads, settings),
+        RuleResumeSegmenter(),
+        SentenceTransformersBiEncoder(settings.ml_bi_encoder_path, settings.ml_torch_threads, settings),
+        SentenceTransformersPairScorer(
+            settings.ml_cross_encoder_path, settings.ml_manifest_path, settings.ml_batch_size
+        ),
+        settings.ml_max_pending,
+    )
+
+
+def pipeline_id(ml: MlComponents, settings: Settings) -> str:
+    """Coverage cache includes selection, extraction, aggregation and thresholds."""
+    return fingerprint(
+        [
+            ml.resume_model_version,
+            ml.vacancy_model_version,
+            ml.scorer.version,
+            settings.match_phrases_per_requirement,
+            settings.ml_partial_threshold,
+            settings.ml_covered_threshold,
+            "semantic-topk-v1",
+            "coverage-v1",
+        ]
     )
 
 
 def model_specs(ml: MlComponents, settings: Settings) -> list[ModelSpec]:
-    """Спецификации моделей для реестра в порядке ``ner``, ``bi_encoder``, ``cross_encoder``."""
-    bi_real = bool(settings.ml_bi_encoder_path)
-    bi_name = Path(settings.ml_bi_encoder_path).name if bi_real else ml.bi_encoder.version
-    ce_real = bool(settings.ml_cross_encoder_path)
+    """Mathematical model identity is separate from thresholds and deployment paths."""
     return [
-        ModelSpec("ner", ml.extractor.version, "1", f"builtin:{ml.extractor.version}", None, {}),
+        ModelSpec(
+            "ner",
+            "rubert-mini-frida-ner",
+            ml.extractor.version,
+            settings.ml_ner_path,
+            None,
+            getattr(ml.extractor, "config", {}),
+        ),
         ModelSpec(
             "bi_encoder",
-            bi_name,
-            (settings.ml_bi_encoder_version or ml.bi_encoder.version) if bi_real else "1",
-            settings.ml_bi_encoder_path if bi_real else f"builtin:{ml.bi_encoder.version}",
+            "deepvk/USER-bge-m3",
+            ml.bi_encoder.version,
+            settings.ml_bi_encoder_path,
             ml.bi_encoder.dim,
-            {"max_seq_length": settings.ml_bi_encoder_max_seq_length} if bi_real else {},
+            getattr(ml.bi_encoder, "config", {}),
         ),
         ModelSpec(
             "cross_encoder",
-            ml.scorer.version if not ce_real else Path(settings.ml_cross_encoder_path).name,
-            (settings.ml_model_version or ml.scorer.version) if ce_real else "1",
-            settings.ml_cross_encoder_path if ce_real else f"builtin:{ml.scorer.version}",
+            "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+            ml.scorer.version,
+            settings.ml_cross_encoder_path,
             None,
-            {
-                "covered_threshold": settings.ml_covered_threshold,
-                "partial_threshold": settings.ml_partial_threshold,
-                "partial_credit": PARTIAL_CREDIT,
-                "type_weights": {},
-                "type_prefix": {t.value: prefix for t, prefix in TYPE_PREFIX.items()},
-            },
+            getattr(ml.scorer, "config", {}),
         ),
     ]

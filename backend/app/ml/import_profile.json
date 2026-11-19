@@ -1,0 +1,120 @@
+{
+  "model_version": "fill-bd-v1:de54c44574b38b04456ec2774ad6e3769bcae4932af9bd4920d97963a77db967",
+  "processing": {
+    "content_hash": "sha256-utf8-json-array-v1",
+    "mapping": "fill-bd-mapping-v1",
+    "normalization": "ner-text-2026-11-12-v1"
+  },
+  "profiles": {
+    "encoder": {
+      "config": {
+        "dim": 1024,
+        "files": {
+          "1_Pooling/config.json": "13e69897522ee8255104483ed9f219465d1be3936654a54a318758738052789e",
+          "config.json": "f3552b70cacff0f14829896d9021372a7667676f900111d1e68664e021ab3f7f",
+          "config_sentence_transformers.json": "7e71918e932bc82c9222ba146a82c370e73f089be7ea2f058a39f954d1a48631",
+          "model.safetensors": "e6aa9c8e51a60ff383186a2f28f658305ba4ad23d2fa24296607885458ef2733",
+          "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+          "sentence_bert_config.json": "eb9b44b13c0f52a3b3685c3b1cbdea1ba8b04bea123b98f61610048940776eb1",
+          "sentencepiece.bpe.model": "1538f6a9b7588645542db5c84f16c0b8e00a93ba9dbef13792ea065bdda403fb",
+          "special_tokens_map.json": "66e573bfc6c3b062381e41274f7fd4143daaf01926888ffbd880c87aa6368443",
+          "tokenizer.json": "068d9f7ed9dd190a00a567e5f7750fdc591b93bc623072ac8050a303c25f5937",
+          "tokenizer_config.json": "797a7a078a80fdec3525f2625def11b0b5f31c3636212ef9d79785e6a41451f5"
+        },
+        "inference": {
+          "batch_size": 2,
+          "max_tokens": 8192,
+          "overlap_tokens": 64
+        },
+        "input_fields": [
+          "requirements",
+          "duty"
+        ],
+        "kind": "bi_encoder",
+        "name": "deepvk/USER-bge-m3",
+        "normalization_version": "ner-text-2026-11-12-v1",
+        "normalize": true,
+        "pooling": "CLS",
+        "prompt": "",
+        "revision": "0cc6cfe48e260fb0474c753087a69369e88709ae",
+        "runtime": {
+          "cpu_threads": 2,
+          "dtype": "float32"
+        },
+        "versions": {
+          "numpy": "2.5.4",
+          "pgvector": "0.5.1",
+          "psycopg": "3.3.9",
+          "sentence-transformers": "6.3.0",
+          "tokenizers": "0.23.3",
+          "torch": "2.14.1+cu126",
+          "tqdm": "4.70.1",
+          "transformers": "5.22.2"
+        },
+        "windows": "token IDs, weighted by newly covered tokens, FP32 L2"
+      },
+      "version": "306e878a79b0405367fd9da575da4a16448587bbfd7196ca016f559bf758f1c6"
+    },
+    "ner": {
+      "config": {
+        "bio": "all subtokens, reject partial word spans, repair isolated I",
+        "coordinates": "Unicode field-local half-open",
+        "dim": null,
+        "files": {
+          "config.json": "10dc92bf5f905cacf21ba19da3dd98f34bb53cd00889c02fe947ae6da4f551c1",
+          "model.safetensors": "8797cf2fcc2b7e3b6aaff4381daad716e311ba7bacf797cd839edea1fa328a3c",
+          "special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+          "tokenizer.json": "ce51cde5df60ecb167abec4c90db11360482150628f7a91f3e316df6d6ff6f6f",
+          "tokenizer_config.json": "d00e52df51e242331b0a0a33925b36a39b40aabba4d6cfb44a94f5608ebf0c98",
+          "vocab.txt": "f056a69b097422652053bf87565c35543e5d81540ca4b7dddd28de4157a969e0"
+        },
+        "id2label": {
+          "0": "O",
+          "1": "B-HARD_SKILL",
+          "10": "I-CERTIFICATE",
+          "11": "B-LANGUAGE",
+          "12": "I-LANGUAGE",
+          "2": "I-HARD_SKILL",
+          "3": "B-SOFT_SKILL",
+          "4": "I-SOFT_SKILL",
+          "5": "B-EXPERIENCE",
+          "6": "I-EXPERIENCE",
+          "7": "B-EDUCATION",
+          "8": "I-EDUCATION",
+          "9": "B-CERTIFICATE"
+        },
+        "inference": {
+          "batch_size": 8,
+          "max_tokens": 512,
+          "overlap_tokens": 128
+        },
+        "input_fields": [
+          "requirements",
+          "duty"
+        ],
+        "kind": "ner",
+        "name": "rubert-mini-frida-ner",
+        "normalization_version": "ner-text-2026-11-12-v1",
+        "origin": "checkpoint-1690, exported model",
+        "preferred": "preferred-v1",
+        "runtime": {
+          "cpu_threads": 2,
+          "dtype": "float32"
+        },
+        "versions": {
+          "numpy": "2.5.4",
+          "pgvector": "0.5.1",
+          "psycopg": "3.3.9",
+          "sentence-transformers": "6.3.0",
+          "tokenizers": "0.23.3",
+          "torch": "2.14.1+cu126",
+          "tqdm": "4.70.1",
+          "transformers": "5.22.2"
+        },
+        "windows": "item/word boundaries, max context, earlier window on tie"
+      },
+      "version": "37bdc3ae918f2231eb960faebf9feaf809cda8d1bf392d32761a66a59c8614bf"
+    }
+  },
+  "schema_sha256": "4a70230716fa99b3c8a1508248732ef4e2bb97d1155b82dd02f904b69c06a565"
+}

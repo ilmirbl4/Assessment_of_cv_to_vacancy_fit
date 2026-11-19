@@ -1,15 +1,13 @@
-"""Отправка писем: консольная и SMTP-реализации, тексты писем."""
+"""Отправка писем: SMTP-реализация, тексты писем."""
 
 from __future__ import annotations
 
-import logging
 import smtplib
+import ssl
 from email.message import EmailMessage
+from email.utils import formatdate, make_msgid
+from time import sleep
 from typing import Protocol
-
-from app.services.security import mask_email
-
-log = logging.getLogger("app.email")
 
 SIGNATURE = "Система подбора вакансий"
 
@@ -20,14 +18,6 @@ class EmailSender(Protocol):
     def send(self, to: str, subject: str, text: str) -> None:
         """Отправляет письмо (блокирующий вызов)."""
         ...
-
-
-class ConsoleEmailSender:
-    """Пишет в лог тему и ссылку, адрес маскирует (тесты и запуск без Docker)."""
-
-    def send(self, to: str, subject: str, text: str) -> None:
-        """Выводит письмо в лог."""
-        log.info("Письмо для %s: %s\n%s", mask_email(to), subject, text)
 
 
 class SmtpEmailSender:
@@ -44,7 +34,7 @@ class SmtpEmailSender:
         sender_name: str,
         timeout: float,
     ) -> None:
-        """Сохраняет параметры соединения (``security``: ssl / starttls / none)."""
+        """Сохраняет параметры соединения с SSL или STARTTLS."""
         self._host, self._port, self._security = host, port, security
         self._user, self._password = user, password
         self._sender, self._sender_name, self._timeout = sender, sender_name, timeout
@@ -55,17 +45,46 @@ class SmtpEmailSender:
         message["From"] = f'"{self._sender_name}" <{self._sender}>'
         message["To"] = to
         message["Subject"] = subject
+        message["Date"] = formatdate(usegmt=True)
+        message["Message-ID"] = make_msgid(domain=self._sender.rsplit("@", 1)[-1])
         message.set_content(text, charset="utf-8")
+        for delay in (2, 5):
+            try:
+                smtp = self._connect()
+            except ssl.SSLError:
+                raise
+            except smtplib.SMTPResponseException as exc:
+                if not 400 <= exc.smtp_code < 500:
+                    raise
+            except smtplib.SMTPNotSupportedError:
+                raise
+            except OSError:
+                pass
+            else:
+                break
+            sleep(delay)
+        else:
+            smtp = self._connect()
+        # После передачи DATA сбой соединения не показывает, принял ли сервер письмо.
+        with smtp:
+            smtp.send_message(message)
+
+    def _connect(self) -> smtplib.SMTP:
         if self._security == "ssl":
-            smtp: smtplib.SMTP = smtplib.SMTP_SSL(self._host, self._port, timeout=self._timeout)
+            smtp: smtplib.SMTP = smtplib.SMTP_SSL(
+                self._host, self._port, timeout=self._timeout, context=ssl.create_default_context()
+            )
         else:
             smtp = smtplib.SMTP(self._host, self._port, timeout=self._timeout)
-        with smtp:
+        try:
             if self._security == "starttls":
-                smtp.starttls()
+                smtp.starttls(context=ssl.create_default_context())
             if self._user:
                 smtp.login(self._user, self._password)
-            smtp.send_message(message)
+        except Exception:
+            smtp.close()
+            raise
+        return smtp
 
 
 def confirmation_message(link: str, ttl_hours: int) -> tuple[str, str]:

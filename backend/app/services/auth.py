@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import re
+import smtplib
 import uuid
 from dataclasses import dataclass
 from datetime import timedelta
@@ -150,10 +152,31 @@ class AuthService:
         async def job() -> None:
             try:
                 await asyncio.to_thread(self._sender.send, to, subject, text)
-            except Exception:
-                log.error("Не удалось отправить письмо")
+            except smtplib.SMTPRecipientsRefused as exc:
+                code, reply = next(iter(exc.recipients.values()), (0, b""))
+                self._log_smtp_rejection(exc, code, reply)
+            except smtplib.SMTPResponseException as exc:
+                self._log_smtp_rejection(exc, exc.smtp_code, exc.smtp_error)
+            except OSError as exc:
+                log.error("Не удалось отправить письмо (%s, errno=%s)", type(exc).__name__, exc.errno)
+            except Exception as exc:
+                log.error("Не удалось отправить письмо (%s)", type(exc).__name__)
+            else:
+                log.info("Письмо принято SMTP-сервером")
 
         self._tasks.spawn(job(), name="send-email")
+
+    @staticmethod
+    def _log_smtp_rejection(exc: smtplib.SMTPException, code: int, reply: bytes | str) -> None:
+        if isinstance(reply, bytes):
+            reply = reply.decode("ascii", errors="replace")
+        enhanced_code = re.search(r"\b[245]\.\d{1,3}\.\d{1,3}\b", reply)
+        log.error(
+            "SMTP отклонил письмо (%s, код %s, расширенный код %s)",
+            type(exc).__name__,
+            code,
+            enhanced_code[0] if enhanced_code else "отсутствует",
+        )
 
     # ---------- вход и выход ----------
 

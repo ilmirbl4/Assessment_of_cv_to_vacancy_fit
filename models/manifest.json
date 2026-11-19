@@ -1,0 +1,47 @@
+{
+  "models": {
+    "USER-bge-m3": {
+      "origin": "deepvk/USER-bge-m3",
+      "revision": "0cc6cfe48e260fb0474c753087a69369e88709ae",
+      "files": {
+        ".revision": "01071ee72bd66242bfcf9feb826c6001785162ad1c2df313d9bcae42e91b11ff",
+        "1_Pooling/config.json": "13e69897522ee8255104483ed9f219465d1be3936654a54a318758738052789e",
+        "README.md": "eb176c83586e764e1c71a7d22e248fea424669b3d59aafa81c938e06af1ac534",
+        "config.json": "f3552b70cacff0f14829896d9021372a7667676f900111d1e68664e021ab3f7f",
+        "config_sentence_transformers.json": "7e71918e932bc82c9222ba146a82c370e73f089be7ea2f058a39f954d1a48631",
+        "model.safetensors": "e6aa9c8e51a60ff383186a2f28f658305ba4ad23d2fa24296607885458ef2733",
+        "modules.json": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf",
+        "sentence_bert_config.json": "eb9b44b13c0f52a3b3685c3b1cbdea1ba8b04bea123b98f61610048940776eb1",
+        "sentencepiece.bpe.model": "1538f6a9b7588645542db5c84f16c0b8e00a93ba9dbef13792ea065bdda403fb",
+        "special_tokens_map.json": "66e573bfc6c3b062381e41274f7fd4143daaf01926888ffbd880c87aa6368443",
+        "tokenizer.json": "068d9f7ed9dd190a00a567e5f7750fdc591b93bc623072ac8050a303c25f5937",
+        "tokenizer_config.json": "797a7a078a80fdec3525f2625def11b0b5f31c3636212ef9d79785e6a41451f5"
+      }
+    },
+    "rubert-mini-frida-ner": {
+      "origin": "local export checkpoint-1690",
+      "revision": null,
+      "files": {
+        "config.json": "10dc92bf5f905cacf21ba19da3dd98f34bb53cd00889c02fe947ae6da4f551c1",
+        "model.safetensors": "8797cf2fcc2b7e3b6aaff4381daad716e311ba7bacf797cd839edea1fa328a3c",
+        "special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+        "tokenizer.json": "ce51cde5df60ecb167abec4c90db11360482150628f7a91f3e316df6d6ff6f6f",
+        "tokenizer_config.json": "d00e52df51e242331b0a0a33925b36a39b40aabba4d6cfb44a94f5608ebf0c98",
+        "vocab.txt": "f056a69b097422652053bf87565c35543e5d81540ca4b7dddd28de4157a969e0"
+      }
+    },
+    "mmarco-mMiniLMv2-L12-H384-v1": {
+      "origin": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+      "revision": "1427fd652930e4ba29e8149678df786c240d8825",
+      "files": {
+        "README.md": "474736a65d6393a060119a8dc304563af67af4d8d86ccfee4a05dd0df107fc11",
+        "config.json": "cc2cfe51aa3fd759d21d21acf5dfd6994aa67a3c9210636d22e143699d336c77",
+        "model.safetensors": "5daeca2481a76b5976a2bdc32f0a78532b6716da4f8cd3ff59460ef8d2f359b4",
+        "sentencepiece.bpe.model": "cfc8146abe2a0488e9e2a0c56de7952f7c11ab059eca145a0a727afce0db2865",
+        "special_tokens_map.json": "378eb3bf733eb16e65792d7e3fda5b8a4631387ca04d2015199c4d4f22ae554d",
+        "tokenizer.json": "62c24cdc13d4c9952d63718d6c9fa4c287974249e16b7ade6d5a85e7bbb75626",
+        "tokenizer_config.json": "e7fbfbfa6347b4e414c1cee50d142e2c2f9a895dad68b068ae83a8b564c3837e"
+      }
+    }
+  }
+}

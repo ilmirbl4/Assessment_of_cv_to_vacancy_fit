@@ -19,6 +19,16 @@ const rowTint: Record<Requirement['status'], string | false> = {
  */
 export function RequirementsTable({ requirements }: { requirements: Requirement[] }) {
   const hasGaps = requirements.some((r) => r.status !== 'covered');
+  if (requirements.length === 0) {
+    return (
+      <Card title="Требования вакансии">
+        <Alert variant="info">
+          Модель не выделила требований в тексте вакансии. Обработка завершена успешно — это пустой результат NER,
+          а не ошибка. Процент соответствия по такой вакансии не рассчитывается.
+        </Alert>
+      </Card>
+    );
+  }
   return (
     <Card title="Требования вакансии">
       <Table caption="Требования вакансии и их покрытие резюме">

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import Depends, Request
+from fastapi import Depends, HTTPException, Request
 
 from app.container import Container
 from app.domain.models import Role, User
@@ -13,7 +13,15 @@ from app.services import errors
 
 def get_container(request: Request) -> Container:
     """Контейнер зависимостей приложения."""
-    container: Container = request.app.state.container
+    container: Container | None = getattr(request.app.state, "container", None)
+    if container is None:
+        raise HTTPException(503, "Система подготавливается. Состояние: /api/v1/status")
+    path = request.url.path
+    if (
+        path.startswith(("/api/v1/matching", "/api/v1/vacancies"))
+        or (path == "/api/v1/resume" and request.method == "PUT")
+    ) and not request.app.state.bootstrap["matching_ready"]:
+        raise HTTPException(503, "Подготовка моделей и вакансий ещё не завершена. Состояние: /api/v1/status")
     return container
 
 

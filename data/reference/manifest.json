@@ -1,0 +1,22 @@
+{
+  "reference_id": "trudvsem-20000-66d729a0f8051cbb",
+  "count": 20000,
+  "snapshot_utc": "2026-10-19T19:26:44Z",
+  "origin_run": "8b001c18-dd71-4128-bf37-82e8f009f08e",
+  "source_hashes": {
+    "selection.jsonl": "66d729a0f8051cbbb8887549af325aada5dfbce747868e9b01b08ee0e5b4105a",
+    "prepared.jsonl": "4e1e6d839d97508ad044e2cf886a7a7b283bf93a0ebf833e1512a9af54225457",
+    "source_inventory.json": "1f8c29826d058d6440d3056f1aadd9d106500dd9a019d4a22709a3f9e7d0ec56"
+  },
+  "normalization": "ner-text-2026-11-12-v1",
+  "files": {
+    "vacancies.jsonl.gz": "8ec804f6c7b666f3998c2adc1e95e8e02df6c01c9ed90be97123086617f522f5",
+    "selection.jsonl": "66d729a0f8051cbbb8887549af325aada5dfbce747868e9b01b08ee0e5b4105a"
+  },
+  "precomputed_features": {
+    "file": "features.jsonl.gz",
+    "sha256": "bf2bd704856c537e8231f3516110063a997788a3060c116f4448e1886375196c",
+    "pipeline_id": "c7d52932c7b2e4a96ac282f5586ea427c28904d094aa5d9b8a32bb7f18316d35",
+    "origin": "verified successful fill_bd model outputs; FP32 vectors, exported NER"
+  }
+}

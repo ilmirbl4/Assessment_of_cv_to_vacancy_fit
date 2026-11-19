@@ -32,14 +32,14 @@ export function PsiSection({ data }: { data: DriftDashboard }) {
           </thead>
           <tbody>
             {data.indicators.map((i) => {
-              const warn = i.psi > data.psi_threshold;
+              const warn = i.psi !== null && i.psi > data.psi_threshold;
               return (
                 <tr key={i.key} data-drift={warn ? 'warning' : 'ok'} className={cn(warn && 'bg-warning-soft')}>
                   <Td>{i.name}</Td>
                   <Td>{ENTITY_LABEL[i.entity]}</Td>
-                  <Td numeric>{formatDecimal(i.psi)}</Td>
+                  <Td numeric>{i.psi === null ? '—' : formatDecimal(i.psi)}</Td>
                   <Td>
-                    <StatusBadge kind={warn ? 'drift' : 'ok'} />
+                    {i.psi === null ? <span>{i.reason ?? 'Недостаточно данных'}</span> : <StatusBadge kind={warn ? 'drift' : 'ok'} />}
                   </Td>
                 </tr>
               );
@@ -63,6 +63,7 @@ export function PsiSection({ data }: { data: DriftDashboard }) {
 
 /** Столбчатая диаграмма одного показателя с бейджем PSI и таблицей данных. */
 function IndicatorChart({ indicator: i, threshold }: { indicator: DriftIndicator; threshold: number }) {
+  if (i.psi === null) return <Card title={i.name}><p>{i.reason ?? 'Недостаточно данных'}</p><p>Эталон: {i.reference_size ?? 0}; текущая выборка: {i.current_size ?? 0}</p></Card>;
   const warn = i.psi > threshold;
   const rows = i.reference.map((r, idx) => ({ bin: r.bin, reference: r.share, current: i.current[idx]?.share ?? 0 }));
   return (
@@ -73,7 +74,7 @@ function IndicatorChart({ indicator: i, threshold }: { indicator: DriftIndicator
       headerAction={
         <Badge tone={warn ? 'warning' : 'neutral'} className="shrink-0 tabular">
           {warn ? <AlertTriangle aria-hidden="true" size={14} strokeWidth={2} /> : null}
-          PSI {formatDecimal(i.psi)}
+          PSI {i.psi === null ? '—' : formatDecimal(i.psi)}
         </Badge>
       }
       table={

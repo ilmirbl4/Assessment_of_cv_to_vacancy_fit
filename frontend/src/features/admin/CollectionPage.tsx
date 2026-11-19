@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import { Play } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';
 import { errorMessage } from '../../api/client';
@@ -120,7 +121,7 @@ export function RunsTable({ runs }: { runs: CollectionRun[] }) {
             data-highlight={r.status === 'failed' && r.error_count > 0 ? 'error' : undefined}
             className={cn(r.status === 'failed' && r.error_count > 0 && 'bg-danger-soft')}
           >
-            <Td>{formatDateTime(r.started_at)}</Td>
+            <Td><Link to={`/admin/drift/data?batch=${r.id}`}>{formatDateTime(r.started_at)}</Link></Td>
             <Td>{r.finished_at ? formatDateTime(r.finished_at) : '—'}</Td>
             <Td>
               <StatusBadge kind={r.status} />

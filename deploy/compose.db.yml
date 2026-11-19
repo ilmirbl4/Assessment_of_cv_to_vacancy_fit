@@ -1,0 +1,19 @@
+services:
+  db:
+    image: ${POSTGRES_IMAGE:-pgvector/pgvector@sha256:131dcf7ff6a900545df8e7e092c270aa8c6db2f2c818e408cb45ec21316b74e6}
+    restart: unless-stopped
+    env_file: deploy/db.env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    logging:
+      options: {max-size: "10m", max-file: "3"}
+  backend:
+    depends_on:
+      db: {condition: service_healthy}
+volumes:
+  postgres:

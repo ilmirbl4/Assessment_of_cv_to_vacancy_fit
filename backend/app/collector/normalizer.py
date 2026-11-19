@@ -11,7 +11,8 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from app.domain.models import Employer, NormalizedVacancy, SourceField
-from app.ml.vacancy_text import content_hash, normalize_section
+from app.ml.normalization import prepare_text
+from app.ml.vacancy_text import content_hash
 from app.reference import (
     EMPLOYMENT_SOURCE,
     SCHEDULE_SOURCE,
@@ -214,7 +215,7 @@ def normalize(
     except ValueError as exc:
         raise InvalidVacancyError("некорректная дата") from exc
 
-    title = " ".join(clean_text(raw["job-name"]).split())
+    title = str(raw["job-name"]).strip()
     if not title:
         raise InvalidVacancyError("пустое название")
     salary_from, salary_to = _salary(raw.get("salary_min")), _salary(raw.get("salary_max"))
@@ -239,8 +240,9 @@ def normalize(
     requirement = _as_mapping(raw.get("requirement"))
     years = parse_experience(requirement.get("experience"))
     education = _education(requirement.get("education"), sink)
-    requirements_text = normalize_section(raw.get("requirements"))
-    duties_text = normalize_section(raw.get("duty"))
+    _, bodies, _ = prepare_text(raw.get("requirements"), raw.get("duty"))
+    requirements_text = bodies["requirements"]
+    duties_text = bodies["duties"]
     for key in raw:
         if key not in _KNOWN_KEYS:
             _log_once(sink, f"key:{key}", f"Новый ключ источника: {key}")

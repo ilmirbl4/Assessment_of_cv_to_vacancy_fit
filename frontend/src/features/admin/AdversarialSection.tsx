@@ -20,6 +20,7 @@ export function AdversarialSection({ data }: { data: DriftDashboard }) {
 
   return (
     <Card title="Состязательная валидация">
+      {!last ? <p>{data.adversarial.reason ?? 'Недостаточно данных для ROC-AUC'}</p> : null}
       {last && rocExceeded(data) ? (
         <Alert variant="warning" className="mb-4">
           ROC-AUC = {formatDecimal(last.roc_auc)} превышает порог {formatRatio(roc_auc_threshold)}: распределение вакансий
@@ -32,7 +33,7 @@ export function AdversarialSection({ data }: { data: DriftDashboard }) {
             <LineChart data={points}>
               <CartesianGrid vertical={false} stroke="var(--color-chart-grid)" />
               <XAxis dataKey="label" tick={axisTick} tickLine={false} tickMargin={8} />
-              <YAxis tick={axisTick} tickLine={false} axisLine={false} domain={[0.4, 0.8]} tickFormatter={(v) => formatRatio(Number(v))} />
+              <YAxis tick={axisTick} tickLine={false} axisLine={false} domain={[0, 1]} tickFormatter={(v) => formatRatio(Number(v))} />
               <Tooltip contentStyle={tooltipStyle} formatter={(v) => formatDecimal(Number(v))} />
               <ReferenceLine
                 y={roc_auc_threshold}

@@ -1,0 +1,294 @@
+{
+  "model": "/home/ilmir/Desktop/University/ТРПС/Курсовая/Assessment_of_cv_to_vacancy_fit/models/mmarco-mMiniLMv2-L12-H384-v1",
+  "pairs": "/home/ilmir/Desktop/University/ТРПС/Курсовая/Assessment_of_cv_to_vacancy_fit/data/demo/calibration_pairs.json",
+  "count": 15,
+  "thresholds": {
+    "partial": 0.3,
+    "covered": 0.45
+  },
+  "rows": [
+    {
+      "id": "python-experience",
+      "requirement": "Опыт программирования на Python",
+      "fragment": "Разрабатываю сервисы на Python более четырёх лет",
+      "label": "covered",
+      "score": 0.2167088800934683
+    },
+    {
+      "id": "sql",
+      "requirement": "Знание SQL",
+      "fragment": "Пишу SQL-запросы и оптимизирую PostgreSQL",
+      "label": "covered",
+      "score": 0.0040145141380865945
+    },
+    {
+      "id": "docker",
+      "requirement": "Владение Docker",
+      "fragment": "Контейнеризация сервисов с помощью Docker и Docker Compose",
+      "label": "covered",
+      "score": 0.04233283543189527
+    },
+    {
+      "id": "education",
+      "requirement": "Высшее образование",
+      "fragment": "Окончил МГТУ им. Баумана, бакалавр",
+      "label": "covered",
+      "score": 0.199045787533834
+    },
+    {
+      "id": "english",
+      "requirement": "Английский язык",
+      "fragment": "Английский: читаю техническую документацию",
+      "label": "covered",
+      "score": 0.12435113238275286
+    },
+    {
+      "id": "1c",
+      "requirement": "Знание 1С",
+      "fragment": "Работал с 1С:Предприятие 8.3",
+      "label": "covered",
+      "score": 0.00893226708745891
+    },
+    {
+      "id": "absent-java",
+      "requirement": "Знание Java",
+      "fragment": "Опыт разработки на Python и SQL",
+      "label": "not_covered",
+      "score": 0.0055438383376835015
+    },
+    {
+      "id": "absent-kubernetes",
+      "requirement": "Опыт работы с Kubernetes",
+      "fragment": "Настраивал CI/CD в GitLab, Docker не использовал",
+      "label": "not_covered",
+      "score": 0.0003431159515933206
+    },
+    {
+      "id": "negation-python",
+      "requirement": "Python не требуется",
+      "fragment": "Опыт разработки на Python более четырёх лет",
+      "label": "not_covered",
+      "score": 0.050063130775836
+    },
+    {
+      "id": "wrong-education",
+      "requirement": "Высшее образование",
+      "fragment": "Среднее профессиональное образование, техникум",
+      "label": "not_covered",
+      "score": 0.2697803999785963
+    },
+    {
+      "id": "partial-experience",
+      "requirement": "Опыт работы от 5 лет",
+      "fragment": "Опыт работы 2 года на позиции разработчика",
+      "label": "partially_covered",
+      "score": 0.007871011213626086
+    },
+    {
+      "id": "partial-teamwork",
+      "requirement": "Коммуникабельность",
+      "fragment": "Работал в команде из восьми человек, проводил code review",
+      "label": "partially_covered",
+      "score": 0.002793692394203311
+    },
+    {
+      "id": "partial-database",
+      "requirement": "Знание PostgreSQL",
+      "fragment": "Работал с базами данных MySQL и SQLite",
+      "label": "partially_covered",
+      "score": 0.0024087662867704526
+    },
+    {
+      "id": "partial-leadership",
+      "requirement": "Опыт управления командой",
+      "fragment": "Был тимлидом небольшой команды из трёх разработчиков",
+      "label": "partially_covered",
+      "score": 0.004316513577909128
+    },
+    {
+      "id": "partial-python-basic",
+      "requirement": "Опыт разработки на Python",
+      "fragment": "Знаю синтаксис Python на базовом уровне, коммерчески не разрабатывал",
+      "label": "partially_covered",
+      "score": 0.04211371727193788
+    }
+  ],
+  "threshold_grid": [
+    {
+      "partial": 0.45,
+      "covered": 0.8,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.45,
+      "covered": 0.75,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.45,
+      "covered": 0.7,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.45,
+      "covered": 0.6,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.45,
+      "covered": 0.5,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.4,
+      "covered": 0.8,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.4,
+      "covered": 0.75,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.4,
+      "covered": 0.7,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.4,
+      "covered": 0.6,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.4,
+      "covered": 0.5,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.4,
+      "covered": 0.45,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.3,
+      "covered": 0.8,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.3,
+      "covered": 0.75,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.3,
+      "covered": 0.7,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.3,
+      "covered": 0.6,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.3,
+      "covered": 0.5,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.3,
+      "covered": 0.45,
+      "accuracy": 0.26666666666666666
+    },
+    {
+      "partial": 0.2,
+      "covered": 0.8,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.2,
+      "covered": 0.75,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.2,
+      "covered": 0.7,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.2,
+      "covered": 0.6,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.2,
+      "covered": 0.5,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.2,
+      "covered": 0.45,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.1,
+      "covered": 0.8,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.1,
+      "covered": 0.75,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.1,
+      "covered": 0.7,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.1,
+      "covered": 0.6,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.1,
+      "covered": 0.5,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.1,
+      "covered": 0.45,
+      "accuracy": 0.2
+    },
+    {
+      "partial": 0.05,
+      "covered": 0.8,
+      "accuracy": 0.13333333333333333
+    },
+    {
+      "partial": 0.05,
+      "covered": 0.75,
+      "accuracy": 0.13333333333333333
+    },
+    {
+      "partial": 0.05,
+      "covered": 0.7,
+      "accuracy": 0.13333333333333333
+    },
+    {
+      "partial": 0.05,
+      "covered": 0.6,
+      "accuracy": 0.13333333333333333
+    },
+    {
+      "partial": 0.05,
+      "covered": 0.5,
+      "accuracy": 0.13333333333333333
+    },
+    {
+      "partial": 0.05,
+      "covered": 0.45,
+      "accuracy": 0.13333333333333333
+    }
+  ],
+  "markdown": "| Пара | Требование | Фрагмент | Ожидание | Score |\n|---|---|---|---|---|\n| python-experience | Опыт программирования на Python | Разрабатываю сервисы на Python более четырёх лет | covered | 0.2167 |\n| sql | Знание SQL | Пишу SQL-запросы и оптимизирую PostgreSQL | covered | 0.0040 |\n| docker | Владение Docker | Контейнеризация сервисов с помощью Docker и Docker Compose | covered | 0.0423 |\n| education | Высшее образование | Окончил МГТУ им. Баумана, бакалавр | covered | 0.1990 |\n| english | Английский язык | Английский: читаю техническую документацию | covered | 0.1244 |\n| 1c | Знание 1С | Работал с 1С:Предприятие 8.3 | covered | 0.0089 |\n| absent-java | Знание Java | Опыт разработки на Python и SQL | not_covered | 0.0055 |\n| absent-kubernetes | Опыт работы с Kubernetes | Настраивал CI/CD в GitLab, Docker не использовал | not_covered | 0.0003 |\n| negation-python | Python не требуется | Опыт разработки на Python более четырёх лет | not_covered | 0.0501 |\n| wrong-education | Высшее образование | Среднее профессиональное образование, техникум | not_covered | 0.2698 |\n| partial-experience | Опыт работы от 5 лет | Опыт работы 2 года на позиции разработчика | partially_covered | 0.0079 |\n| partial-teamwork | Коммуникабельность | Работал в команде из восьми человек, проводил code review | partially_covered | 0.0028 |\n| partial-database | Знание PostgreSQL | Работал с базами данных MySQL и SQLite | partially_covered | 0.0024 |\n| partial-leadership | Опыт управления командой | Был тимлидом небольшой команды из трёх разработчиков | partially_covered | 0.0043 |\n| partial-python-basic | Опыт разработки на Python | Знаю синтаксис Python на базовом уровне, коммерчески не разрабатывал | partially_covered | 0.0421 |"
+}

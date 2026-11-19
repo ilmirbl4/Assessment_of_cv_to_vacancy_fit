@@ -1,17 +1,10 @@
-FROM python:3.12-slim AS build
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
-WORKDIR /srv
-ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-dev --no-install-project --extra ml
-COPY app ./app
-RUN uv sync --frozen --no-dev --extra ml
-
 FROM python:3.12-slim
 RUN useradd --create-home --uid 10001 appuser
 WORKDIR /srv
-COPY --from=build /srv/.venv /srv/.venv
-COPY --from=build /srv/app /srv/app
+COPY requirements.txt ./
+RUN python -m venv /srv/.venv \
+    && /srv/.venv/bin/python -m pip install --no-cache-dir -r requirements.txt
+COPY app ./app
 ENV PATH="/srv/.venv/bin:$PATH" PYTHONUNBUFFERED=1 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1
 USER appuser
 EXPOSE 8000

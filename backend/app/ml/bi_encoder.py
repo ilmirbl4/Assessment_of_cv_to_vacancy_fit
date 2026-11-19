@@ -1,45 +1,30 @@
-"""Адаптер настоящего би-энкодера (необязательная зависимость ``sentence-transformers``)."""
-
-from __future__ import annotations
+"""Адаптер USER-bge-m3 для поиска по импортированным векторам."""
 
 from array import array
 from collections.abc import Sequence
-from pathlib import Path
-from typing import Any
+from typing import cast
 
+from app.config import Settings
 from app.domain.models import Embedding
+from app.ml.artifacts import identity
+from app.ml.inference import FloatArray, Inference
 
 
 class SentenceTransformersBiEncoder:
-    """Кодирует тексты локальной моделью sentence-transformers без обращения к сети."""
+    """Энкодер, совместимый с векторами вакансий из fill_bd."""
 
-    def __init__(self, path: str, version: str, max_seq_length: int, batch_size: int, torch_threads: int) -> None:
-        """Загружает модель из локального каталога.
-
-        Raises:
-            RuntimeError: пакет ``sentence-transformers`` не установлен.
-        """
-        try:
-            import torch
-            from sentence_transformers import SentenceTransformer
-        except ImportError as exc:
-            raise RuntimeError(
-                "Задан ML_BI_ENCODER_PATH, но пакет sentence-transformers не установлен (uv sync --extra ml)"
-            ) from exc
-        torch.set_num_threads(torch_threads)
-        self._model: Any = SentenceTransformer(path, device="cpu", local_files_only=True)
-        self._model.max_seq_length = max_seq_length
-        self.version = version or Path(path).name
-        # в sentence-transformers 6 метод переименован; старое имя даёт FutureWarning
-        get_dim = getattr(self._model, "get_embedding_dimension", None) or self._model.get_sentence_embedding_dimension
-        self.dim: int = get_dim() or 0
-        self._batch_size = batch_size
+    def __init__(self, path: str, threads: int, settings: Settings) -> None:
+        """Load and validate configured encoder."""
+        inference = dict(
+            max_tokens=settings.ml_encoder_max_tokens,
+            overlap_tokens=settings.ml_encoder_overlap,
+            batch_size=settings.ml_encoder_batch_size,
+        )
+        self.version, self.config = identity("encoder", path, inference, settings.ml_manifest_path)
+        self.dim = settings.ml_embedding_dim
+        self.model = Inference("encoder", path, threads, inference, self.dim)
 
     def encode(self, texts: Sequence[str]) -> list[Embedding]:
-        """L2-нормированные векторы в порядке ``texts``."""
-        if not texts:
-            return []
-        matrix = self._model.encode(
-            list(texts), batch_size=self._batch_size, normalize_embeddings=True, convert_to_numpy=True
-        )
-        return [array("f", row.tolist()) for row in matrix]
+        """Кодирует тексты в порядке входной последовательности."""
+        predictions = self.model.predict([{"model_text": text} for text in texts])
+        return [array("f", cast(FloatArray, vector)) for vector, _ in predictions]

@@ -18,7 +18,7 @@ export function RegisterDonePage() {
     setSending(true);
     try {
       await api.resendConfirmation(email as string);
-      toast('Письмо отправлено повторно');
+      toast('Запрос принят. Повторная отправка доступна раз в минуту.');
     } catch (e) {
       toast(errorMessage(e), 'danger');
     } finally {
@@ -30,8 +30,8 @@ export function RegisterDonePage() {
     <>
       <PageTitle title="Проверьте почту" />
       <p className="mt-4">
-        Мы отправили письмо на <span data-user-content className="font-medium">{email}</span>. Перейдите по ссылке из
-        письма, чтобы подтвердить адрес. До подтверждения вход невозможен.
+        Письмо с подтверждением должно прийти на <span data-user-content className="font-medium">{email}</span>.
+        Проверьте входящие и папку «Спам», затем перейдите по ссылке из письма.
       </p>
       <Button variant="secondary" className="mt-6" fullWidth loading={sending} onClick={() => void resend()}>
         Отправить письмо повторно

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { setUnauthorizedHandler } from '../api/client';
+import { BootstrapStatus } from './BootstrapStatus';
 import { ToastProvider, useToast } from '../components/ui/Toast';
 import { ME_KEY, isIntentionalExit } from '../features/auth/api';
 import { queryClient } from './queryClient';
@@ -39,6 +40,7 @@ export function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
         <SessionBridge />
+        <BootstrapStatus />
         <Outlet />
       </ToastProvider>
     </QueryClientProvider>

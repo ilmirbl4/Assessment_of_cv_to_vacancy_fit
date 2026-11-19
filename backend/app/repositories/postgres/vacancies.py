@@ -101,6 +101,7 @@ class PgVacancyRepository:
 
     def __init__(self, db: Database, active: ActiveModels, ef_search: int) -> None:
         """Создаёт репозиторий; ``ef_search`` — значение ``hnsw.ef_search`` при отборе кандидатов."""
+        self.monitoring: Any = None
         self._db = db
         self._active = active
         self._ef_search = ef_search
@@ -153,6 +154,13 @@ class PgVacancyRepository:
 
     @staticmethod
     def _vacancy(row: asyncpg.Record, requirements: tuple[VacancyRequirement, ...]) -> Vacancy:
+        labels = {"requirements": "Требования", "duties": "Обязанности"}
+        fields = []
+        for field in row["source_fields"]:
+            if "label" in field:
+                fields.append(SourceField(field["label"], field["value"]))
+            elif (name := field.get("source_field")) in labels:
+                fields.append(SourceField(labels[name], row[name] or ""))
         return Vacancy(
             id=row["source_id"],
             title=row["title"],
@@ -167,7 +175,7 @@ class PgVacancyRepository:
             experience_code=row["experience_code"],
             professional_area=row["category"],
             source_url=row["vacancy_url"],
-            source_fields=tuple(SourceField(f["label"], f["value"]) for f in row["source_fields"]),
+            source_fields=tuple(fields),
             requirements=requirements,
             embedding=None,
             model_version=row["model_version"],
@@ -255,6 +263,7 @@ class PgVacancyRepository:
         *,
         keep_analysis: Collection[str] = (),
         ingestion_run_id: str | None = None,
+        checkpoint: tuple[str, int] | None = None,
     ) -> UpsertResult:
         """Пишет пакет одной транзакцией; при ошибке данных повторяет построчно в отдельных savepoint."""
         batch = sorted(vacancies, key=lambda v: v.id)
@@ -264,9 +273,23 @@ class PgVacancyRepository:
         try:
             async with self._db.pool.acquire() as conn, conn.transaction():
                 result, fresh = await self._write(conn, batch, keep, ingestion_run_id)
+                if ingestion_run_id:
+                    await conn.execute(
+                        """UPDATE ingestion_run SET inserted=inserted+$2,updated=updated+$3,
+                        unchanged=unchanged+$4,received=received+$5 WHERE id=$1""",
+                        ingestion_run_id,
+                        result.new,
+                        result.updated,
+                        result.unchanged,
+                        len(batch),
+                    )
+                if checkpoint:
+                    await conn.execute("UPDATE source_batch SET cursor=$2 WHERE checksum=$1", *checkpoint)
             self._categories.update(fresh)
             return result
         except (asyncpg.DataError, asyncpg.IntegrityConstraintViolationError) as exc:
+            if checkpoint:
+                raise
             log.warning("Пакет вакансий не записан целиком (%s), повтор построчно", type(exc).__name__)
         new = updated = unchanged = 0
         failed: list[str] = []
@@ -302,11 +325,14 @@ class PgVacancyRepository:
             old = existing.get(vac.id)
             if old is None:
                 to_insert.append(vac)
+            elif old["source_modified_at"] > vac.date_modify:
+                unchanged.append(vac)
             elif (
                 old["source_modified_at"] != vac.date_modify
                 or bytes(old["content_hash"]) != vac.content_hash
                 or old["model_version"] != vac.model_version
                 or not old["is_active"]
+                or vac.id not in keep
             ):
                 to_update.append(vac)
             else:
@@ -324,7 +350,47 @@ class PgVacancyRepository:
                 max(v.updated_at for v in unchanged),
                 run_id,
             )
-        await self._write_analysis(conn, [v for v in (*to_insert, *to_update) if v.id not in keep], ids)
+        changed = [v for v in (*to_insert, *to_update) if v.id not in keep]
+        if changed:
+            await conn.execute(
+                """DELETE FROM recommendation_set WHERE user_id IN
+                (SELECT user_id FROM recommendation_item WHERE vacancy_id=ANY($1::bigint[]))""",
+                [ids[v.id] for v in changed],
+            )
+            await conn.execute(
+                "DELETE FROM match_cache WHERE vacancy_id=ANY($1::bigint[])", [ids[v.id] for v in changed]
+            )
+        await self._write_analysis(conn, changed, ids)
+        for v in changed:
+            monitoring = getattr(self, "monitoring", None)
+            if monitoring and v.embedding is not None:
+                from app.ml.artifacts import fingerprint
+                from app.monitoring.service import features
+
+                f = features(
+                    v.professional_area, [{"type": r.type.value, "text": r.text} for r in v.requirements], v.embedding
+                )
+                await conn.execute(
+                    """INSERT INTO feature_observation(event_key,source_id,content_hash,pipeline_id,
+                    reference_id,batch_id,features) VALUES($1,$2,$3,$4,$5,$6,$7) ON CONFLICT DO NOTHING""",
+                    fingerprint([run_id, v.id, v.content_hash.hex(), monitoring.feature_id]),
+                    v.id,
+                    v.content_hash.hex(),
+                    monitoring.feature_id,
+                    monitoring.reference_id,
+                    run_id,
+                    f,
+                )
+            await conn.execute(
+                """INSERT INTO vacancy_analysis(vacancy_id,pipeline_id,content_hash,ner_id,bi_id)
+                VALUES($1,$2,$3,$4,$5) ON CONFLICT(vacancy_id,pipeline_id)
+                DO UPDATE SET content_hash=excluded.content_hash""",
+                ids[v.id],
+                v.model_version,
+                v.content_hash,
+                self._active.ner_id,
+                self._active.bi_id,
+            )
         return UpsertResult(len(to_insert), len(to_update), len(unchanged)), fresh
 
     async def _reference_rows(self, conn: asyncpg.Connection, batch: list[Vacancy]) -> tuple[_Refs, dict[str, int]]:

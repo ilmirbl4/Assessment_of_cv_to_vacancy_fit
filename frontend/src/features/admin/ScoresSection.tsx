@@ -11,7 +11,8 @@ import { scoresDrifted } from './api';
  * Форматирует p-значение: очень малые значения — «< 0,001», остальные — три знака после запятой.
  * @param p p-значение
  */
-export function formatPValue(p: number): string {
+export function formatPValue(p: number | null): string {
+  if (p === null) return '—';
   if (p < 0.001) return '< 0,001';
   return p.toLocaleString('ru-RU', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
 }
@@ -41,6 +42,7 @@ export function cumulative(data: DriftDashboard) {
  */
 export function ScoresSection({ data }: { data: DriftDashboard }) {
   const s = data.model_scores;
+  if (s.statistic === null || s.p_value === null) return <div><h3>Выходы модели</h3><p>{s.reason ?? 'Недостаточно данных'}</p><p>Эталон: {s.reference_size}; текущие оценки: {s.current_size}</p></div>;
   const drifted = scoresDrifted(data);
   const histogram = s.reference.map((r, i) => ({ bin: r.bin, reference: r.share, current: s.current[i]?.share ?? 0 }));
   const cdf = cumulative(data);
